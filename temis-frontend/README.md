@@ -1,8 +1,8 @@
-# TEMIS FrontEnd
+# TEMIS 
 This app is build with Angular JS >1.6
 <br>
 # Quick Start
-## To install
+### To install
 
 ```
 git clone http://github.com/udistrital/temis/tree/master/temis-frontend
@@ -12,5 +12,5 @@ bower install
 <br>
 This app contain bootstrap 3.2.0
 
-# Author
+### Author
 Cristian Andrey Sossa
