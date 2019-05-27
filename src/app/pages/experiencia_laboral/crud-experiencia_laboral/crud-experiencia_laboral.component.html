@@ -1,0 +1,53 @@
+<nb-card>
+  <nb-card-body>
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Formulario experiencia laboral">
+        <!--<toaster-container [toasterconfig]="config"></toaster-container>
+  <ngx-dinamicform [normalform]="formInfoExperienciaLaboral" [modeloData]="info_experiencia_laboral" (result)="validarForm($event)" (resultAux)="searchOrganizacion($event)" [clean]="clean">
+  </ngx-dinamicform>-->
+        <div class="container col-lg-8 col-md-10 col-sm-12">
+          <form>
+            <div class="form-group">
+              <label for="organizacion">Organización</label>
+              <select style="margin-bottom: 16px;" id="organizacion" placeholder="Organización"
+                class="form-control form-control-sm" #organizacion>
+                <option value="1">Organización 1</option>
+                <option value="2">Organización 2</option>
+                <option value="3">Organización 3</option>
+                <option value="4">Organización 4</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_ini">Fecha de Ingreso</label>
+              <input type="date" id="fecha_ini" class="form-control" placeholder="Ingrese la fecha de ingreso"
+                aria-label="horas" aria-describedby="basic-addon-h" #fechaIni>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_fin">Fecha de Retiro</label>
+              <input type="date" id="fecha_fin" class="form-control" placeholder="Ingrese la fecha de retiro"
+                aria-label="horas" aria-describedby="basic-addon-h" #fechaFin>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="horas">Horas diarias laboradas</label>
+              <input type="number" id="horas" class="form-control" placeholder="Ingrese el número de horas"
+                aria-label="horas" aria-describedby="basic-addon-h" #horas>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="dias">Días laborados semanales</label>
+              <input type="number" id="dias" class="form-control" placeholder="Ingrese el número de días"
+                aria-label="horas" aria-describedby="basic-addon-d" #dias>
+            </div>
+
+            <button type="submit" class="btn btn-primary"
+              (click)="createInfoExperienciaLaboral(organizacion.value, fechaIni.value, fechaFin.value, horas.value, dias.value)">Guardar</button>
+          </form>
+        </div>
+
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

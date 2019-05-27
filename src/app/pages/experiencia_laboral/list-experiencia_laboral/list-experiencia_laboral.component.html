@@ -1,0 +1,56 @@
+<nb-card>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <!--<nb-card class="row" [hidden]="!crud">
+      <nb-card-body>
+        <a class="pull-right text-danger link" (click)="crud = false"><strong>X</strong></a>
+        <ngx-crud-experiencia-laboral [info_experiencia_laboral_id]="uid" [ente_id]="eid" (eventChange)="onChange($event)"></ngx-crud-experiencia-laboral>
+
+      </nb-card-body>
+    </nb-card>-->
+
+    <button nbButton (click)="onCreate($event)" class="btn btn-primary" style="margin-bottom: 16px;">Crear</button>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>Id</th>
+          <th>Organización</th>
+          <th>Fecha de inicio</th>
+          <th>Fecha de retiro</th>
+          <th>Horas laboradas</th>
+          <th>Días laborados</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td> {{ item.Id }} </td>
+          <td> {{ item.EntidadId }} </td>
+          <td> {{ item.FechaIngreso | date }} </td>
+          <td> {{ item.FechaRetiro | date }} </td>
+          <td> {{ item.HorasLaboradasDia }} </td>
+          <td> {{ item.DiasLaboradosSemana }} </td>
+          <td>
+            <button class="btn btn-outline-success btn-icon" (click)="onEdit(item.Id)">
+              <i class="nb-edit"></i>
+            </button>
+            <button class="btn btn-outline-success btn-icon" (click)="onDelete(item.Id)">
+              <i class="nb-edit"></i>
+            </button>
+            <button class="btn btn-outline-success btn-icon" (click)="onIncapacidad(item.Id)">
+              <i class="nb-edit"></i>
+            </button>
+            <button class="btn btn-outline-success btn-icon" (click)="onCobro(item.Id)">
+              <i class="nb-edit"></i>
+            </button>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--<ng2-smart-table [settings]="settings" [source]="source" (delete)="onDelete($event)" (edit)="onEdit($event)">
+    </ng2-smart-table>-->
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,46 @@
+<div class="col-md-12 col-lg-12 ">
+  <nb-card>
+    <nb-card-body>
+      <toaster-container [toasterconfig]="config"></toaster-container>
+      <nb-tabset fullWidth>
+        <nb-tab tabTitle="Listado de personas">
+          <br />
+          
+          <!--<ng2-smart-table [settings]="settings" [source]="source" (edit)="goExperienceHistory($event)">
+          </ng2-smart-table>-->
+
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Id</th>
+                <th>Documento</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Ciudad de nacimiento</th>
+                <th>Estado civil</th>
+                <th>Genero</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data">
+                <td> {{ item.Id }} </td>
+                <td> {{ item.TipoDocumento }} {{ item.NumeroDocumento }} </td>
+                <td> {{ item.Nombres }} </td>
+                <td> {{ item.Apellidos }} </td>
+                <td> {{ item.CiudadNacimiento }} </td>
+                <td> {{ item.EstadoCivil }} </td>
+                <td> {{ item.Genero }} </td>
+                <td>
+                  <button class="btn btn-icon btn-outline-success" (click)="goExperienceHistory(item.Id)">
+                    <i class="nb-edit" style="font-size: 1em"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </nb-tab>
+      </nb-tabset>
+    </nb-card-body>
+  </nb-card>
+</div>

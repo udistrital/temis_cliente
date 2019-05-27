@@ -1,0 +1,43 @@
+<nb-card>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <button nbButton (click)="onCreate()" class="btn btn-primary" style="margin-bottom: 16px;">Crear</button>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>Id</th>
+          <th>Resolución Orden de pago</th>
+          <th>Consecutivo Cta. Cobro</th>
+          <th>Fecha (desde)</th>
+          <th>Fecha (hasta)</th>
+          <th>Valor a pagar</th>
+          <th>Medio de pago</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td> {{ item.Id }} </td>
+          <td> {{ item.ResolucionOrdenPago }} </td>
+          <td> {{ item.ConsecutivoCuentaCobro }} </td>
+          <td> {{ item.FechaDesdePago | date }} </td>
+          <td> {{ item.FechaHastaPago | date }} </td>
+          <td> {{ item.ValorCuentaCobro }} </td>
+          <td> {{ item.ObservacionesPago }} </td>
+          <td>
+            <button class="btn btn-outline-success btn-edit" (click)="onEdit(item.Id)">
+              <i class="nb-edit"></i>
+            </button>
+            <button class="btn btn-outline-success btn-trash" (click)="onDelete(item.Id)">
+              <i class="nb-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--<ng2-smart-table [settings]="settings" [source]="source" (delete)="onDelete($event)" (edit)="onEdit($event)">
+      </ng2-smart-table>-->
+  </nb-card-body>
+</nb-card>
