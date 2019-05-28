@@ -143,6 +143,11 @@ export class PensionadoListComponent implements OnInit {
         }
       });*/
 
+    this.userService.get('')
+      .subscribe(res => {
+        console.log(res);
+      });
+
     this.http.get('http://localhost:8080/v1/usuario/', {
       headers: new HttpHeaders({
         'Accept': 'application/json',
