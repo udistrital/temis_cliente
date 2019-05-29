@@ -3,11 +3,13 @@ import { OrganizacionService } from './../../../@core/data/organizacion.service'
 import { LocalDataSource } from 'ng2-smart-table';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import Swal from 'sweetalert2';
-import 'style-loader!angular2-toaster/toaster.css';
 import { ExperienciaService } from '../../../@core/data/experiencia.service';
+import { MontoAceptadoCobrarService } from '../../../@core/data/monto_aceptado_cobrar.service';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import Swal from 'sweetalert2';
+import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
   selector: 'ngx-monto-aceptado-list',
@@ -30,12 +32,14 @@ export class MontoAceptadoListComponent implements OnInit {
     private http: HttpClient,
     private experienciaService: ExperienciaService,
     private organizacionService: OrganizacionService,
+    private montoAceptadoService: MontoAceptadoCobrarService,
     private route: ActivatedRoute,
     private router: Router) {
+
     this.loadData();
-    //this.cargarCampos();
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      //this.cargarCampos();
+      console.log("Language Change...")
     });
   }
 
@@ -44,67 +48,26 @@ export class MontoAceptadoListComponent implements OnInit {
   }
 
   loadData(): void {
-    /*this.experienciaService.get('experiencia_laboral/?query=Persona:' + this.eid).subscribe(res => {
-     if (res !== null) {
-       this.data = <Array<any>>res;
-       this.data.forEach(element => {
-         this.organizacionService.get('organizacion/?query=Ente:' + element.Organizacion).subscribe(r => {
-           if (res !== null) {
-             element.Organizacion = r[0];
-           }
-           this.source.load(this.data);
-         },
-         (error: HttpErrorResponse) => {
-           Swal({
-             type: 'error',
-             title: error.status + '',
-             text: this.translate.instant('ERROR.' + error.status),
-             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-           });
-         });
-       });
-     }
-   },
-   (error: HttpErrorResponse) => {
-     Swal({
-       type: 'error',
-       title: error.status + '',
-       text: this.translate.instant('ERROR.' + error.status),
-       confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-     });
-   });*/
-
-    console.log("loadData??")
     this.data = <Array<any>>[]
 
     this.route.queryParams
-      //.filter(params => params.usuarioId)
       .subscribe(params => {
-
-        console.log("Id param = ", params['ExperienciaLaboralId']);
-
         this.ExperienciaLaboralId = params['ExperienciaLaboralId'];
-
-        console.log(this.ExperienciaLaboralId)
-
-        if (this.ExperienciaLaboralId != null)
-          this.http.get('http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/?query=ExperienciaLaboralId:' + (this.ExperienciaLaboralId).toString(), {
-            headers: new HttpHeaders({
-              'Accept': 'application/json',
-            }),
-          }).subscribe(res => {
-            console.log(res);
-
-            if (res) {
-              this.data = <Array<any>>res
-              //this.source.load(this.data);
-            }
+        
+        if (this.ExperienciaLaboralId != null) {
+          this.montoAceptadoService.get('?query=ExperienciaLaboralId:' + (this.ExperienciaLaboralId).toString()).subscribe(res => {
+            this.data = <Array<any>>res
           })
+        }
 
       });
   }
 
   ngOnInit() {
+  }
+
+  goBack() {
+    //this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list'], { queryParams: { usuarioId: id } })
   }
 
   onCreate() {
@@ -133,15 +96,11 @@ export class MontoAceptadoListComponent implements OnInit {
     Swal(opt)
       .then((willDelete) => {
         if (willDelete.value) {
-          console.log("Eliminar")
-
           this.http.delete('http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/' + (id).toString(), {
             headers: new HttpHeaders({
               'Accept': 'application/json',
             }),
           }).subscribe(res => {
-            console.log(res);
-
             if (res !== null) {
               this.loadData();
               this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
@@ -156,22 +115,6 @@ export class MontoAceptadoListComponent implements OnInit {
               confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
             });
           })
-
-          /*this.experienciaService.delete('experiencia_laboral', event.data).subscribe(res => {
-            if (res !== null) {
-              this.loadData();
-              this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
-                this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
-                this.translate.instant('GLOBAL.confirmarEliminar'));
-            }
-          }, (error: HttpErrorResponse) => {
-            Swal({
-              type: 'error',
-              title: error.status + '',
-              text: this.translate.instant('ERROR.' + error.status),
-              confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            });
-          });*/
         }
       });
   }

@@ -8,12 +8,10 @@ export class WebsocketService {
     private subject: Rx.Subject<MessageEvent>;
 
     public connect(url): Rx.Subject<MessageEvent> {
-        console.log("url: ", url)
-        if (!this.subject) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>> connect: ", url)
+        if (!this.subject) 
             this.subject = this.create(url);
-            console.log("subject: ", this.subject)
-            console.info('Successfully connected: ' + url);
-        }
+        
         return this.subject;
     }
 

@@ -1,52 +1,50 @@
 <nb-card>
   <nb-card-body>
     <toaster-container [toasterconfig]="config"></toaster-container>
-    <!--<nb-card class="row" [hidden]="!crud">
-      <nb-card-body>
-        <a class="pull-right text-danger link" (click)="crud = false"><strong>X</strong></a>
-        <ngx-crud-experiencia-laboral [info_experiencia_laboral_id]="uid" [ente_id]="eid" (eventChange)="onChange($event)"></ngx-crud-experiencia-laboral>
 
-      </nb-card-body>
-    </nb-card>-->
+    <div class="btn-group btn-group-sm" role="group" aria-label="btn action">
+      <button (click)="goBack()" class="btn-sm btn btn-secondary">Volver</button>
+      <button (click)="onCreate()" class="btn-sm btn btn-primary">Crear</button>
+    </div>
 
-    <button nbButton (click)="onCreate()" class="btn btn-primary" style="margin-bottom: 16px;">Crear</button>
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Monto Aceptado {{ entity ? (': ' + entity.Nombre) : '' }} {{ user ? (' - ' + user.Nombres + ' ' + user.Apellidos) : '' }}">
+        <br />
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>Id</th>
+              <th>Acto Administrativo</th>
+              <th>Cuota aceptada</th>
+              <th>Fecha de pension</th>
+              <th>Resolución de pensión</th>
+              <th>Valor Mesada Pensión</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data">
+              <td> {{ item.Id }} </td>
+              <td> {{ item.TipoActoAdministrativo }} de {{ item.FechaActoAdministrativo | date }} </td>
+              <td> {{ item.CuotaAceptadaOrganizacion }} </td>
+              <td> {{ item.FechaPension | date }} </td>
+              <td> {{ item.FechaResolucionPension | date }} </td>
+              <td> {{ item.ValorMesadaPension }} </td>
+              <td>
+                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" data-toggle="tooltip" data-placement="top"
+                  title="Editar"></i>
 
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th>Id</th>
-          <th>Acto Administrativo</th>
-          <th>Cuota aceptada</th>
-          <th>Fecha de pension</th>
-          <th>Resolución de pensión</th>
-          <th>Valor Mesada Pensión</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of data">
-          <td> {{ item.Id }} </td>
-          <td> {{ item.TipoActoAdministrativo }} de {{ item.FechaActoAdministrativo | date }} </td>
-          <td> {{ item.CuotaAceptadaOrganizacion }} </td>
-          <td> {{ item.FechaPension | date }} </td>
-          <td> {{ item.FechaResolucionPension | date }}  </td>
-          <td> {{ item.ValorMesadaPension }} </td>
-          <td>
-            <button class="btn btn-outline-success btn-edit" (click)="onEdit(item.Id)">
-              <i class="nb-edit"></i>
-            </button>
-            <button class="btn btn-outline-success btn-trash" (click)="onDelete(item.Id)">
-              <i class="nb-trash"></i>
-            </button>
-            <button class="btn btn-outline-success btn-icon" (click)="onRegistrarCobro(item.Id)">
-              <i class="nb-coffee-maker"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" data-toggle="tooltip" data-placement="top"
+                  title="Eliminar"></i>
 
-    <!--<ng2-smart-table [settings]="settings" [source]="source" (delete)="onDelete($event)" (edit)="onEdit($event)">
-    </ng2-smart-table>-->
+                <i class="nb-compose" style="font-size: 22px; cursor: pointer;" (click)="onRegistrarCobro(item.Id)" data-toggle="tooltip" data-placement="top"
+                  title="Registrar cobro"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-tab>
+    </nb-tabset>
+
   </nb-card-body>
 </nb-card>

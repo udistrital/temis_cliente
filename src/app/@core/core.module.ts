@@ -2,6 +2,7 @@ import { AuthInterceptor } from './_Interceptor/auth.Interceptor';
 import { EnteService } from './data/ente.service';
 import { UbicacionesService } from './data/ubicaciones.service';
 import { PersonaService } from './data/persona.service';
+import { MontoAceptadoCobrarService } from './data/monto_aceptado_cobrar.service';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbAuthModule, NbDummyAuthStrategy } from '@nebular/auth';
@@ -107,6 +108,7 @@ export const NB_CORE_PROVIDERS = [
     ProgramaAcademicoService,
     ProduccionAcademicaService,
     EnteService,
+    MontoAceptadoCobrarService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

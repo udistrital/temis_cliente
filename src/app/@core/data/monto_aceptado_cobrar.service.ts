@@ -11,29 +11,17 @@ const httpOptions = {
   }),
 }
 
-const path = GENERAL.ENTORNO.PERSONA_SERVICE;
+const path = GENERAL.ENTORNO.MONTO_ACEPTADO_POR_COBRAR_SERVICE;
+
+console.log(path)
 
 @Injectable()
-export class PersonaService {
+export class MontoAceptadoCobrarService {
 
   private user$ = new Subject<[object]>();
   public user: any;
 
-  constructor(private http: HttpClient) {
-    if (window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined) {
-      const id_token = window.localStorage.getItem('id_token').split('.');
-      const payload = JSON.parse(atob(id_token[1]));
-      window.localStorage.setItem('usuario', payload.sub);
-      this.http.get(path + 'persona/?query=Usuario:' + payload.sub, httpOptions)
-        .subscribe(res => {
-          if (res !== null) {
-            this.user = res[0];
-            this.user$.next(this.user);
-            window.localStorage.setItem('ente', res[0].Ente);
-          }
-        });
-    }
-  }
+  constructor(private http: HttpClient) { }
 
   get(endpoint) {
     return this.http.get(path + endpoint, httpOptions)
