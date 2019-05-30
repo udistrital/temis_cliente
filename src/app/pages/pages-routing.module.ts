@@ -17,22 +17,6 @@ const routes: Routes = [{
       loadChildren: './gestion_informacion/gestion_informacion.module#GestionInformacionModule',
     },
     {
-      path: 'inscripcion',
-      loadChildren: './inscripcion/inscripcion.module#InscripcionModule',
-    },
-    {
-      path: 'admision',
-      loadChildren: './admision/admision.module#AdmisionModule',
-    },
-    {
-      path: 'notificacion',
-      loadChildren: './notificacion/notificacion.module#NotificacionModule',
-    },
-    {
-      path: 'propuesta_grado',
-      loadChildren: './propuesta_grado/propuesta_grado.module#PropuestaGradoModule',
-    },
-    {
       path: 'experiencia_laboral',
       loadChildren: './experiencia_laboral/experiencia_laboral.module#ExperienciaLaboralModule',
     },
@@ -40,16 +24,10 @@ const routes: Routes = [{
       path: 'registrar_cobro',
       loadChildren: './registrar_cobro/registrar_cobro.module#RegistrarCobroModule',
     },
-    // {
-    //   path: 'libro',
-    //   loadChildren: './libro/libro.module#LibroModule',
-    // },
     {
-      path: 'tipo_proyecto',
-      loadChildren: './tipo_proyecto/tipo_proyecto.module#TipoProyectoModule',
+      path: 'gestion_datos',
+      loadChildren: './gestion_datos/gestion_datos.module#GestionDatosModule',
     },
-    { path: 'detalleInfo/:id',
-      component: DetalleAdmisionComponent },
     {
       path: '',
       redirectTo: 'dashboard',

@@ -11,12 +11,15 @@
             "admision": "Admisiones"
         },
         "gestion_informacion": {
-            "gestion_informacion": "Gestión de Información",
+            "gestion_informacion": "Gestión de información",
             "pensionado": "Pensionado"
         },
         "gestion_datos": {
-            "gestion_datos": "Gestión de Información",
-            "entidad": "Entidad"
+            "gestion_datos": "Gestión de datos",
+            "organizacion": "Organización",
+            "indice_precio_consumidor": "Índice de precio al consumo",
+            "dtf": "DTF",
+            "salario_minimo_legal": "Salario mínimo legal"
         },
         "info_persona": {
             "info_persona": "Información personal",

@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizacionService } from './../../../@core/data/organizacion.service';
-import { LocalDataSource } from 'ng2-smart-table';
+import { MontoAceptadoCobrarService } from '../../../@core/data/monto_aceptado_cobrar.service';
+import { RegistrarCobroService } from '../../../@core/data/registrar_cobro.service';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import Swal from 'sweetalert2';
-import 'style-loader!angular2-toaster/toaster.css';
 import { ExperienciaService } from '../../../@core/data/experiencia.service';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PersonaService } from '../../../@core/data/persona.service';
+
+import Swal from 'sweetalert2';
+import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
   selector: 'ngx-registrar-cobro-list',
@@ -15,27 +18,30 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./registrar_cobro-list.component.scss']
 })
 export class RegistrarCobroListComponent implements OnInit {
-  uid: number;
-  eid: number;
-  showTable: boolean = false;
   config: ToasterConfig;
-  settings: any;
-  source: LocalDataSource = new LocalDataSource();
+
   data: Array<any>;
-  crud = false;
   RegistrarMontoAceptadoPorCobrarId: number;
+  MontoAceptado: any;
+  ExperienciaLaboral: any;
+  Usuario: any;
+  Organizacion: any;
 
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
     private http: HttpClient,
     private experienciaService: ExperienciaService,
     private organizacionService: OrganizacionService,
+    private usuarioService: PersonaService,
+    private MontoAceptadoCobrarService: MontoAceptadoCobrarService,
+    private RegistrarCobroService: RegistrarCobroService,
     private route: ActivatedRoute,
     private router: Router) {
+
     this.loadData();
-    //this.cargarCampos();
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      //this.cargarCampos();
+      console.log("Language Change...")
     });
   }
 
@@ -44,67 +50,43 @@ export class RegistrarCobroListComponent implements OnInit {
   }
 
   loadData(): void {
-    /*this.experienciaService.get('experiencia_laboral/?query=Persona:' + this.eid).subscribe(res => {
-     if (res !== null) {
-       this.data = <Array<any>>res;
-       this.data.forEach(element => {
-         this.organizacionService.get('organizacion/?query=Ente:' + element.Organizacion).subscribe(r => {
-           if (res !== null) {
-             element.Organizacion = r[0];
-           }
-           this.source.load(this.data);
-         },
-         (error: HttpErrorResponse) => {
-           Swal({
-             type: 'error',
-             title: error.status + '',
-             text: this.translate.instant('ERROR.' + error.status),
-             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-           });
-         });
-       });
-     }
-   },
-   (error: HttpErrorResponse) => {
-     Swal({
-       type: 'error',
-       title: error.status + '',
-       text: this.translate.instant('ERROR.' + error.status),
-       confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-     });
-   });*/
-
-    console.log("loadData??")
     this.data = <Array<any>>[]
 
     this.route.queryParams
-      //.filter(params => params.usuarioId)
       .subscribe(params => {
-
-        console.log("Id param = ", params['RegistrarMontoAceptadoPorCobrarId']);
 
         this.RegistrarMontoAceptadoPorCobrarId = params['RegistrarMontoAceptadoPorCobrarId'];
 
-        console.log(this.RegistrarMontoAceptadoPorCobrarId)
-
         if (this.RegistrarMontoAceptadoPorCobrarId != null)
-          this.http.get('http://localhost:8080/v1/registrar_recaudo/?query=RegistrarMontoAceptadoPorCobrarId:' + (this.RegistrarMontoAceptadoPorCobrarId).toString(), {
-            headers: new HttpHeaders({
-              'Accept': 'application/json',
-            }),
-          }).subscribe(res => {
-            console.log(res);
+          this.MontoAceptadoCobrarService.get((this.RegistrarMontoAceptadoPorCobrarId).toString()).subscribe(res => {
+            this.MontoAceptado = res;
 
-            if (res) {
-              this.data = <Array<any>>res
-              //this.source.load(this.data);
-            }
+            this.experienciaService.get((this.MontoAceptado.ExperienciaLaboralId).toString()).subscribe(res => {
+              this.ExperienciaLaboral = res;
+
+              this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
+                this.Organizacion = res
+              })
+
+              this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
+                this.Usuario = res
+              })
+            })
+          })
+
+        this.RegistrarCobroService.get('?query=RegistrarMontoAceptadoPorCobrarId:' + (this.RegistrarMontoAceptadoPorCobrarId).toString())
+          .subscribe(res => {
+            this.data = <Array<any>>res
           })
 
       });
   }
 
   ngOnInit() {
+  }
+
+  goBack() {
+    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list'], { queryParams: { ExperienciaLaboralId: 1 } })
   }
 
   onCreate() {

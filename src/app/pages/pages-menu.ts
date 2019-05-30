@@ -20,6 +20,34 @@ export const MENU_ITEMS: MenuItem[] = [
         key: 'pensionado'
       }
     ]
+  },
+  {
+    title: 'Gestión de Datos',
+    icon: 'nb-compose',
+    link: '/pages/gestion_datos',
+    key: 'gestion_datos',
+    children: [
+      {
+        title: 'Organizacion',
+        link: '/pages/gestion_datos/organizacion-list',
+        key: 'organizacion'
+      },
+      {
+        title: 'Indice Precio Consumidor',
+        link: '/pages/gestion_datos/indice_precio_consumo-list',
+        key: 'indice_precio_consumidor'
+      },
+      {
+        title: 'DTF',
+        link: '/pages/gestion_datos/dtf-list',
+        key: 'dtf'
+      },
+      {
+        title: 'Salario Minimo Legal',
+        link: '/pages/gestion_datos/salario_minimo_legal-list',
+        key: 'salario_minimo_legal'
+      }
+    ]
   }
 ]
 

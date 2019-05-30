@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizacionService } from './../../../@core/data/organizacion.service';
-import { LocalDataSource } from 'ng2-smart-table';
+import { PersonaService } from '../../../@core/data/persona.service';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { ExperienciaService } from '../../../@core/data/experiencia.service';
@@ -17,15 +17,15 @@ import 'style-loader!angular2-toaster/toaster.css';
   styleUrls: ['./monto-aceptado-list.component.scss']
 })
 export class MontoAceptadoListComponent implements OnInit {
-  uid: number;
-  eid: number;
-  showTable: boolean = false;
   config: ToasterConfig;
-  settings: any;
-  source: LocalDataSource = new LocalDataSource();
-  data: Array<any>;
-  crud = false;
+  
   ExperienciaLaboralId: number;
+  UsuarioId: number;
+
+  data: Array<any>;
+  ExperienciaLaboral: any;
+  Organizacion: any;
+  Usuario: any;
 
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
@@ -33,6 +33,7 @@ export class MontoAceptadoListComponent implements OnInit {
     private experienciaService: ExperienciaService,
     private organizacionService: OrganizacionService,
     private montoAceptadoService: MontoAceptadoCobrarService,
+    private usuarioService: PersonaService,
     private route: ActivatedRoute,
     private router: Router) {
 
@@ -55,6 +56,18 @@ export class MontoAceptadoListComponent implements OnInit {
         this.ExperienciaLaboralId = params['ExperienciaLaboralId'];
         
         if (this.ExperienciaLaboralId != null) {
+          this.experienciaService.get((this.ExperienciaLaboralId).toString()).subscribe(res => {
+            this.ExperienciaLaboral = res
+
+            this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
+              this.Organizacion = res
+            })
+
+            this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
+              this.Usuario = res
+            })
+          })
+
           this.montoAceptadoService.get('?query=ExperienciaLaboralId:' + (this.ExperienciaLaboralId).toString()).subscribe(res => {
             this.data = <Array<any>>res
           })
@@ -67,7 +80,7 @@ export class MontoAceptadoListComponent implements OnInit {
   }
 
   goBack() {
-    //this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list'], { queryParams: { usuarioId: id } })
+    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list'], { queryParams: { usuarioId: this.ExperienciaLaboral.UsuarioId } })
   }
 
   onCreate() {

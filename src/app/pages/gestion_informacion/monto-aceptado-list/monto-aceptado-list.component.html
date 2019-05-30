@@ -8,8 +8,10 @@
     </div>
 
     <nb-tabset fullWidth>
-      <nb-tab tabTitle="Monto Aceptado {{ entity ? (': ' + entity.Nombre) : '' }} {{ user ? (' - ' + user.Nombres + ' ' + user.Apellidos) : '' }}">
+      <nb-tab
+        tabTitle="Monto Aceptado {{ Organizacion ? (': ' + Organizacion.Nombre) : '' }} {{ Usuario ? (' - ' + Usuario.Nombres + ' ' + Usuario.Apellidos) : '' }}">
         <br />
+        
         <table class="table table-striped table-hover">
           <thead class="thead-dark">
             <tr>
@@ -31,14 +33,14 @@
               <td> {{ item.FechaResolucionPension | date }} </td>
               <td> {{ item.ValorMesadaPension }} </td>
               <td>
-                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Editar"></i>
+                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)"
+                  data-toggle="tooltip" data-placement="top" title="Editar"></i>
 
-                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Eliminar"></i>
+                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)"
+                  data-toggle="tooltip" data-placement="top" title="Eliminar"></i>
 
-                <i class="nb-compose" style="font-size: 22px; cursor: pointer;" (click)="onRegistrarCobro(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Registrar cobro"></i>
+                <i class="nb-compose" style="font-size: 22px; cursor: pointer;" (click)="onRegistrarCobro(item.Id)"
+                  data-toggle="tooltip" data-placement="top" title="Registrar cobro"></i>
               </td>
             </tr>
           </tbody>

@@ -3,6 +3,7 @@ import { EnteService } from './data/ente.service';
 import { UbicacionesService } from './data/ubicaciones.service';
 import { PersonaService } from './data/persona.service';
 import { MontoAceptadoCobrarService } from './data/monto_aceptado_cobrar.service';
+import { RegistrarCobroService } from './data/registrar_cobro.service';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbAuthModule, NbDummyAuthStrategy } from '@nebular/auth';
@@ -23,6 +24,9 @@ import { IdiomaService } from './data/idioma.service';
 import { ProgramaAcademicoService } from './data/programa_academico.service';
 import { ProduccionAcademicaService } from './data/produccion_academica.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DtfService } from './data/dtf.service';
+import { IpcService } from './data/ipc.service';
+import { SalarioMinimoService } from './data/salario_minimo.service';
 
 const socialLinks = [
   {
@@ -109,6 +113,10 @@ export const NB_CORE_PROVIDERS = [
     ProduccionAcademicaService,
     EnteService,
     MontoAceptadoCobrarService,
+    RegistrarCobroService,
+    DtfService,
+    IpcService,
+    SalarioMinimoService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

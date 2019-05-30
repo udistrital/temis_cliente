@@ -1,0 +1,37 @@
+<nb-card>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Índice de precio de consumo (IPC)">
+        <br />
+
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>Id</th>
+              <th>Año de vigencia</th>
+              <th>Índice</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data">
+              <td> {{ item.Id }} </td>
+              <td> {{ item.AnoVigencia | date }} </td>
+              <td> {{ item.IndiceIpc }} </td>
+              <td>
+                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)"
+                  data-toggle="tooltip" data-placement="top" title="Editar"></i>
+
+                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)"
+                  data-toggle="tooltip" data-placement="top" title="Eliminar"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-tab>
+    </nb-tabset>
+
+  </nb-card-body>
+</nb-card>
