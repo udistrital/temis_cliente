@@ -1,3 +1,50 @@
-<p>
-  salario-minimo-legal-crud works!
-</p>
+<nb-card>
+  <nb-card-body>
+
+    <button (click)="goBack()" class="btn-sm btn btn-danger">Cancelar</button>
+
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Formulario Salario mínimo legal">
+
+        <div class="container col-lg-8 col-md-10 col-sm-12">
+          <form name="form" style="padding-top: 16px">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="norma">Norma</label>
+              <input type="text" id="norma" class="form-control" placeholder="Ingrese el tipo de norma" 
+              aria-label="norma" aria-describedby="basic-addon-h" required [(ngModel)]="sml.Norma" name="tipo_norma">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="no_norma">No. Norma</label>
+              <input type="text" id="no_norma" class="form-control" placeholder="Ingrese el tipo de número de norma" 
+              aria-label="no_norma" aria-describedby="basic-addon-h" [(ngModel)]="sml.NumeroNorma" name="no_norma">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_ini">Fecha de Inicio</label>
+              <input type="date" id="fecha_ini" class="form-control" required placeholder="Ingrese la fecha inicio de vigencia" 
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="FechaInicioVigencia" name="fecha_ini">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_fin">Fecha de Finalización</label>
+              <input type="date" id="fecha_fin" class="form-control" required placeholder="Ingrese la fecha final de vigencia" 
+              aria-label="horas" aria-describedby="basic-addon-h" min="{{ FechaInicioVigencia }}" [disabled]="!FechaInicioVigencia" 
+              [(ngModel)]="FechaFinalizacionVigencia" name="fecha_fin">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="sml">Monto Mensual</label>
+              <input type="number" id="sml" class="form-control" placeholder="Ingrese el monto mensual" 
+              aria-label="sml" aria-describedby="basic-addon-h" [(ngModel)]="sml.TasaInteres" name="tasa">
+            </div>
+
+            <button type="submit" class="btn btn-primary" 
+            (click)="save($event, form)">Guardar</button>
+          </form>
+        </div>
+
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

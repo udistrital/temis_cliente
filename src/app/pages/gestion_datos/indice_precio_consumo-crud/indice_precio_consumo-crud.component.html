@@ -1,3 +1,32 @@
-<p>
-  indice-precio-consumo-crud works!
-</p>
+<nb-card>
+  <nb-card-body>
+
+    <button (click)="goBack()" class="btn-sm btn btn-danger">Cancelar</button>
+
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Formulario Índice de precio de consumo (IPC)">
+
+        <div class="container col-lg-8 col-md-10 col-sm-12">
+          <form name="form" style="padding-top: 16px">
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_ini">Año de Vigencia</label>
+              <input type="date" id="fecha_ini" class="form-control" required placeholder="Ingrese el año de vigencia" 
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="AnoVigencia" name="fecha_ini">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="ipc">Índice (Factor)</label>
+              <input type="number" id="ipc" class="form-control" placeholder="Ingrese el índice de precio de consumo" 
+              aria-label="ipc" aria-describedby="basic-addon-h" [(ngModel)]="ipc.TasaInteres" name="tasa">
+            </div>
+
+            <button type="submit" class="btn btn-primary" 
+            (click)="save()">Guardar</button>
+          </form>
+        </div>
+
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>
