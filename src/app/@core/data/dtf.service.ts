@@ -37,8 +37,8 @@ export class DtfService {
     );
   }
 
-  delete(endpoint, element) {
-    return this.http.delete(path + endpoint + '/' + element.Id, httpOptions).pipe(
+  delete(endpoint, id) {
+    return this.http.delete(path + endpoint + '/' + id, httpOptions).pipe(
       catchError(this.handleError),
     );
   }

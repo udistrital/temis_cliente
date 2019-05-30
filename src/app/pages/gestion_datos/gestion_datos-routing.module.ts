@@ -29,7 +29,7 @@ const routes: Routes = [{
     component: DtfListComponent
   },
   {
-    path: 'dtf-crud',
+    path: 'dtf-crud/:Id',
     component: DtfCrudComponent
   },
   {

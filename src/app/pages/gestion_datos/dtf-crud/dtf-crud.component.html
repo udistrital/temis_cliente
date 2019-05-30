@@ -1,3 +1,56 @@
-<p>
-  dtf-crud works!
-</p>
+<nb-card>
+  <nb-card-body>
+
+    <button (click)="goBack()" class="btn-sm btn btn-danger">Cancelar</button>
+
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Formulario Tasa de interés (DTF)">
+
+        <div class="container col-lg-8 col-md-10 col-sm-12">
+          <form name="form" style="padding-top: 16px">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="norma">Norma</label>
+              <input type="text" id="norma" class="form-control" placeholder="Ingrese el tipo de norma" 
+              aria-label="norma" aria-describedby="basic-addon-h" required [(ngModel)]="dtf.Norma" name="tipo_norma">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="no_norma">No. Norma</label>
+              <input type="text" id="no_norma" class="form-control" placeholder="Ingrese el tipo de número de norma" 
+              aria-label="no_norma" aria-describedby="basic-addon-h" [(ngModel)]="dtf.NumeroNorma" name="no_norma">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_norma">Fecha de Norma</label>
+              <input type="date" id="fecha_norma" class="form-control" required placeholder="Ingrese la fecha de la norma" 
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="FechaNorma" name="fecha_norma">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_ini">Fecha de Inicio</label>
+              <input type="date" id="fecha_ini" class="form-control" required placeholder="Ingrese la fecha inicio de vigencia" 
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="FechaInicioVigencia" name="fecha_ini">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="fecha_fin">Fecha de Finalización</label>
+              <input type="date" id="fecha_fin" class="form-control" required placeholder="Ingrese la fecha final de vigencia" 
+              aria-label="horas" aria-describedby="basic-addon-h" min="{{ FechaInicioVigencia }}" [disabled]="!FechaInicioVigencia" 
+              [(ngModel)]="FechaFinalizacionVigencia" name="fecha_fin">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="dtf">Tasa de Interés (Factor)</label>
+              <input type="number" id="dtf" class="form-control" placeholder="Ingrese el factor de la tasa de interés" 
+              aria-label="dtf" aria-describedby="basic-addon-h" [(ngModel)]="dtf.TasaInteres" name="tasa">
+            </div>
+
+            <button type="submit" class="btn btn-primary" 
+            (click)="save($event, form)">Guardar</button>
+          </form>
+        </div>
+
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

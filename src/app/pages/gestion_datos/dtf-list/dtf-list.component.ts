@@ -45,11 +45,11 @@ export class DtfListComponent implements OnInit {
   }
 
   onCreate() {
-    this.router.navigate(['/pages/gestion_datos/dtf-crud'])
+    this.router.navigate(['/pages/gestion_datos/dtf-crud/new'])
   }
 
   onEdit(id) {
-    this.router.navigate(['/pages/gestion_datos/dtf-crud'], { queryParams: { Id: id } })
+    this.router.navigate(['/pages/gestion_datos/dtf-crud/' + (id).toString()])
   }
 
   onDelete(id): void {
@@ -70,7 +70,6 @@ export class DtfListComponent implements OnInit {
             if (res !== null) {
               this.loadData();
               this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
-                this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
                 this.translate.instant('GLOBAL.confirmarEliminar'));
             }
           }, (error: HttpErrorResponse) => {

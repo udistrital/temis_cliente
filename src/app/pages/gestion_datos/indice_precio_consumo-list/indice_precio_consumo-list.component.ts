@@ -45,11 +45,11 @@ export class IndicePrecioConsumoListComponent implements OnInit {
   }
 
   onCreate() {
-    this.router.navigate(['/pages/gestion_datos/ipc-crud'])
+    this.router.navigate(['/pages/gestion_datos/indice_precio_consumo-crud'])
   }
 
   onEdit(id) {
-    this.router.navigate(['/pages/gestion_datos/ipc-crud'], { queryParams: { Id: id } })
+    this.router.navigate(['/pages/gestion_datos/indice_precio_consumo-crud'], { queryParams: { Id: id } })
   }
 
   onDelete(id): void {
