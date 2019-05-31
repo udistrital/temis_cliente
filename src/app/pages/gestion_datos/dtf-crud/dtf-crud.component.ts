@@ -65,7 +65,7 @@ export class DtfCrudComponent implements OnInit {
     if (this.FechaFinalizacionVigencia)
       this.dtf.FechaFinalizacionVigencia = new Date(this.FechaFinalizacionVigencia.concat('T10:00:00-05:00'))
 
-    if (this.id)
+    if (this.id && this.id != 'new')
       this.DtfService.put('', this.dtf).subscribe(res => {
         this.goBack()
       })

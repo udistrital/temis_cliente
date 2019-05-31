@@ -1,52 +1,60 @@
 <nb-card>
   <nb-card-body>
+    
+    <button (click)="goBack()" class="btn-sm btn btn-danger">Cancelar</button>
+
     <nb-tabset fullWidth>
       <nb-tab tabTitle="Formulario registro de cobro">
         <div class="container col-lg-8 col-md-10 col-sm-12">
-          <form>
+          <form name="form" style="padding-top: 16px">
+
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="ResolucionOrdenPago">Resolución orden de pago</label>
-              <input type="text" id="ResolucionOrdenPago" class="form-control" placeholder="Ingrese resolucion de orden de pago" aria-label="ResolucionOrdenPago"
-                aria-describedby="basic-addon-h" #ResolucionOrdenPago>
+              <input type="text" id="ResolucionOrdenPago" class="form-control" placeholder="Ingrese resolucion de orden de pago" 
+              aria-label="ResolucionOrdenPago" aria-describedby="basic-addon-h" 
+              [(ngModel)]="RegistrarMontoAceptadoPorCobrarData.ResolucionOrdenPago" name="resolucionOrden">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="ConsecutivoCuentaCobro">Consecutivo Cta. Cobro</label>
+              <input type="number" id="ConsecutivoCuentaCobro" class="form-control" placeholder="Ingrese el consecutivo de Cta. cobro" 
+              aria-label="ConsecutivoCuentaCobro" aria-describedby="basic-addon-h" 
+              [(ngModel)]="RegistrarMontoAceptadoPorCobrarData.ConsecutivoCuentaCobro" name="consecutivoCobro">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="FechaResolucionOrdenPago">Fecha de resolución orden de pago</label>
               <input type="date" id="FechaResolucionOrdenPago" class="form-control" placeholder="Ingrese la fecha de res. orden de pago"
-                aria-label="horas" aria-describedby="basic-addon-h" #FechaResolucionOrdenPago>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label for="ConsecutivoCuentaCobro">Consecutivo Cta. Cobro</label>
-              <input type="number" id="ConsecutivoCuentaCobro" class="form-control" placeholder="Ingrese el consecutivo de Cta. cobro" aria-label="ConsecutivoCuentaCobro"
-                aria-describedby="basic-addon-h" #ConsecutivoCuentaCobro>
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="FechaResolucionOrdenPago" name="fechaOrden">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="FechaDesdePago">Fecha (desde)</label>
-              <input type="date" id="FechaDesdePago" class="form-control" placeholder="Ingrese la fecha (desde)" aria-label="horas" aria-describedby="basic-addon-h"
-                #FechaDesdePago>
+              <input type="date" id="FechaDesdePago" class="form-control" placeholder="Ingrese la fecha (desde)" 
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="FechaDesdePago" name="fechaIni">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="FechaHastaPago">Fecha (hasta)</label>
-              <input type="date" id="FechaHastaPago" class="form-control" placeholder="Ingrese la fecha (hasta)" aria-label="horas" aria-describedby="basic-addon-h"
-                #FechaHastaPago>
+              <input type="date" id="FechaHastaPago" class="form-control" placeholder="Ingrese la fecha (hasta)" 
+              aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="FechaHastaPago" name="fechaFin">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="ValorCuentaCobro">Valor</label>
-              <input type="number" id="ValorCuentaCobro" class="form-control" placeholder="Ingrese el valor" aria-label="horas" aria-describedby="basic-addon-d"
-                #ValorCuentaCobro>
+              <input type="number" id="ValorCuentaCobro" class="form-control" placeholder="Ingrese el valor" 
+              aria-label="horas" aria-describedby="basic-addon-d" 
+              [(ngModel)]="RegistrarMontoAceptadoPorCobrarData.ValorCuentaCobro" name="valor">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="ObservacionesPago">Medio de pago</label>
-              <input type="text" id="ObservacionesPago" class="form-control" placeholder="Ingrese el medio de pago" aria-label="ObservacionesPago"
-                aria-describedby="basic-addon-h" #ObservacionesPago>
+              <input type="text" id="ObservacionesPago" class="form-control" placeholder="Ingrese el medio de pago" 
+              aria-label="ObservacionesPago" aria-describedby="basic-addon-h" 
+              [(ngModel)]="RegistrarMontoAceptadoPorCobrarData.ObservacionesPago" name="observacionPago">
             </div>
 
-            <button type="submit" class="btn btn-primary" (click)="create(ResolucionOrdenPago.value, FechaResolucionOrdenPago.value, ConsecutivoCuentaCobro.value, FechaDesdePago.value, FechaHastaPago.value, ValorCuentaCobro.value, ObservacionesPago.value)">Guardar</button>
+            <button type="submit" class="btn btn-primary" (click)="save()">Guardar</button>
           </form>
         </div>
 

@@ -9,11 +9,11 @@ const routes: Routes = [{
   path: '',
   component: ExperienciaLaboralComponent,
   children: [{
-    path: 'experiencia_laboral-list',
+    path: 'experiencia_laboral-list/:usuarioId',
     component: ListExperienciaLaboralComponent,
     // canActivate: [AuthGuard],
   }, {
-    path: 'experiencia_laboral-crud',
+    path: 'experiencia_laboral-crud/:usuarioId/:Id',
     component: CrudExperienciaLaboralComponent,
     // canActivate: [AuthGuard],
   }],

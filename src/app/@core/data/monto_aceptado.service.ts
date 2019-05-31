@@ -13,10 +13,8 @@ const httpOptions = {
 
 const path = GENERAL.ENTORNO.MONTO_ACEPTADO_POR_COBRAR_SERVICE;
 
-console.log(path)
-
 @Injectable()
-export class MontoAceptadoCobrarService {
+export class MontoAceptadoService {
 
   private user$ = new Subject<[object]>();
   public user: any;

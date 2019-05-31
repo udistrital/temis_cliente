@@ -44,6 +44,6 @@ export class PensionadoListComponent implements OnInit {
   }
 
   goExperienceHistory(id): void {
-    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list'], { queryParams: { usuarioId: id } })
+    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list/' + (id).toString()])
   }
 }

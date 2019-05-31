@@ -21,7 +21,7 @@ const routes: Routes = [{
     component: IndicePrecioConsumoListComponent
   },
   {
-    path: 'indice_precio_consumo-crud',
+    path: 'indice_precio_consumo-crud/:Id',
     component: IndicePrecioConsumoCrudComponent
   },
   {
@@ -37,7 +37,7 @@ const routes: Routes = [{
     component: SalarioMinimoLegalListComponent
   },
   {
-    path: 'salario_minimo_legal-crud',
+    path: 'salario_minimo_legal-crud/:Id',
     component: SalarioMinimoLegalCrudComponent
   }],
 }];

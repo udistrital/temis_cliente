@@ -9,6 +9,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { CrudExperienciaLaboralComponent } from './crud-experiencia_laboral/crud-experiencia_laboral.component';
 import { ListExperienciaLaboralComponent } from './list-experiencia_laboral/list-experiencia_laboral.component';
 import { ExperienciaService } from '../../@core/data/experiencia.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { ExperienciaService } from '../../@core/data/experiencia.service';
     Ng2SmartTableModule,
     ToasterModule,
     SharedModule,
+    FormsModule
   ],
   declarations: [
     ...routedComponents,

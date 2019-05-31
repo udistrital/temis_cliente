@@ -9,11 +9,11 @@ const routes: Routes = [{
   path: '',
   component: GestionInformacionComponent,
   children: [{
-    path: 'monto_aceptado-crud',
+    path: 'monto_aceptado-crud/:IdExperienciaLaboral/:Id',
     component: MontoAceptadoCrudComponent,
   },
   {
-    path: 'monto_aceptado-list',
+    path: 'monto_aceptado-list/:IdExperienciaLaboral',
     component: MontoAceptadoListComponent
   }, 
   {

@@ -1,19 +1,13 @@
-import { EnteService } from './../../../@core/data/ente.service';
-import { CampusMidService } from './../../../@core/data/campus_mid.service';
-import { Organizacion } from './../../../@core/data/models/organizacion';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MontoAceptadoModel } from '../../../@core/data/models/monto_aceptado';
+
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
-import { OrganizacionService } from '../../../@core/data/organizacion.service';
-import { UbicacionesService } from '../../../@core/data/ubicaciones.service';
-import { Lugar } from '../../../@core/data/models/lugar';
-import { ExperienciaService } from '../../../@core/data/experiencia.service';
-import { NuxeoService } from '../../../@core/utils/nuxeo.service';
-import { DocumentoService } from '../../../@core/data/documento.service';
-import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { MontoAceptadoCobrarService } from '../../../@core/data/monto_aceptado_cobrar.service';
 
 @Component({
   selector: 'ngx-monto-aceptado-crud',
@@ -22,102 +16,79 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class MontoAceptadoCrudComponent implements OnInit {
   config: ToasterConfig;
-  info_experiencia_laboral_id: number;
-  organizacion: Organizacion;
-  ente_id: number;
-  soporte: any;
 
-  ExperienciaLaboralId: number;
-  id: number;
+  MontoAceptado = new MontoAceptadoModel;
+  ExperienciaLaboralId: string;
+  id: string;
+
+  FechaActoAdministrativo: string;
+  FechaPension: string;
+  FechaResolucionPension: string;
 
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
-    private organizacionService: OrganizacionService,
-    private campusMidService: CampusMidService,
-    private ubicacionesService: UbicacionesService,
-    private experienciaService: ExperienciaService,
-    private documentoService: DocumentoService,
-    private nuxeoService: NuxeoService,
-    private enteService: EnteService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router) {
-    //this.formInfoExperienciaLaboral = FORM_EXPERIENCIA_LABORAL;
-    this.construirForm();
+    private router: Router,
+    private MontoAceptadoService: MontoAceptadoCobrarService) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.construirForm();
+      console.log("Language Change...")
     });
-    /*this.loadOptionsTipoOrganizacion();
-    this.loadOptionsPais();
-    this.loadOptionsCargo();
-    this.loadOptionsTipoDedicacion();
-    this.loadOptionsTipoVinculacion();*/
-  }
-
-  construirForm() {
-    // this.formInfoExperienciaLaboral.titulo = this.translate.instant('GLOBAL.experiencia_laboral');
-    /*this.formInfoExperienciaLaboral.btn = this.translate.instant('GLOBAL.guardar');
-    for (let i = 0; i < this.formInfoExperienciaLaboral.campos.length; i++) {
-      this.formInfoExperienciaLaboral.campos[i].label = this.translate.instant('GLOBAL.' +
-        this.formInfoExperienciaLaboral.campos[i].label_i18n);
-      this.formInfoExperienciaLaboral.campos[i].placeholder = this.translate.instant('GLOBAL.placeholder_' +
-        this.formInfoExperienciaLaboral.campos[i].label_i18n);
-    }*/
-    this.route.queryParams
-      //.filter(params => params.usuarioId)
-      .subscribe(params => {
-
-        console.log("Id param = ", params['ExperienciaLaboralId']);
-
-        this.ExperienciaLaboralId = params['ExperienciaLaboralId'];
-        this.id = params['Id']
-
-        console.log(this.ExperienciaLaboralId)
-
-        if (this.ExperienciaLaboralId != null)
-          this.http.get('http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/' + (this.ExperienciaLaboralId).toString(), {
-            headers: new HttpHeaders({
-              'Accept': 'application/json',
-            }),
-          }).subscribe(res => {
-            if (res != null)
-              console.log(res)
-          })
-      });
   }
 
   useLanguage(language: string) {
     this.translate.use(language);
   }
 
-  create(actoAdministrativo: string, fechaActo: string, fechaPension: string, fechaResPension: string, cuota: number, monto: number): void {
-    let url = 'http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/' + (this.id != null ? this.id : '')
-    console.log(url)
-
-    let data = {
-      CuotaAceptadaOrganizacion: Number(cuota),
-      ExperienciaLaboralId: Number(this.ExperienciaLaboralId),
-      FechaActoAdministrativo: new Date(fechaActo),
-      FechaPension: new Date(fechaPension),
-      FechaResolucionPension: new Date(fechaResPension),
-      TipoActoAdministrativo: actoAdministrativo,
-      ValorMesadaPension: Number(monto)
+  save(): void {
+    if (!this.validate_form()) {
+      this.showToast('error', this.translate.instant('GLOBAL.guardar'),
+        'Complete los campos correctamente.');
+      return
     }
 
-    this.http.post(url, data, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-      }),
-    }).subscribe(res => {
-      if (res != null) {
-        console.log(res)
-        this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list'], { queryParams: { ExperienciaLaboralId: this.ExperienciaLaboralId } })
-      }
-    })
+    this.MontoAceptado.ExperienciaLaboralId = Number(this.MontoAceptado.ExperienciaLaboralId);
+
+    if (this.FechaActoAdministrativo)
+      this.MontoAceptado.FechaActoAdministrativo = new Date(this.FechaActoAdministrativo.concat('T10:00:00-05:00'))
+
+    if (this.FechaResolucionPension)
+      this.MontoAceptado.FechaResolucionPension = new Date(this.FechaResolucionPension.concat('T10:00:00-05:00'))
+
+    if (this.FechaPension)
+      this.MontoAceptado.FechaPension = new Date(this.FechaPension.concat('T10:00:00-05:00'))
+
+    if (this.id && this.id != 'new')
+      this.MontoAceptadoService.put('', this.MontoAceptado).subscribe(res => {
+        this.goBack()
+      })
+    else
+      this.MontoAceptadoService.post('', this.MontoAceptado).subscribe(res => {
+        this.goBack()
+      })
+  }
+
+  validate_form() {
+    return true;
+  }
+
+  goBack(): void {
+    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list/' + this.ExperienciaLaboralId])
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get("Id");
+      this.ExperienciaLaboralId = params.get('IdExperienciaLaboral')
+
+      this.MontoAceptado.ExperienciaLaboralId = parseInt(this.ExperienciaLaboralId)
+
+      if (this.id != null && this.id != 'new')
+        this.MontoAceptadoService.get((this.id).toString()).subscribe(res => {
+          this.MontoAceptado = <MontoAceptadoModel>res
+        })
+    });
   }
 
   private showToast(type: string, title: string, body: string) {

@@ -8,11 +8,11 @@ const routes: Routes = [{
   path: '',
   component: RegistrarCobroComponent,
   children: [{
-    path: 'registrar_cobro-crud',
+    path: 'registrar_cobro-crud/:RegistrarMontoAceptadoPorCobrarId/:Id',
     component: RegistrarCobroCrudComponent,
   },
   {
-    path: 'registrar_cobro-list',
+    path: 'registrar_cobro-list/:RegistrarMontoAceptadoPorCobrarId',
     component: RegistrarCobroListComponent
   }],
 }];

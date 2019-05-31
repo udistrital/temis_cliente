@@ -45,11 +45,11 @@ export class SalarioMinimoLegalListComponent implements OnInit {
   }
 
   onCreate() {
-    this.router.navigate(['/pages/gestion_datos/salario_minimo_legal-crud'])
+    this.router.navigate(['/pages/gestion_datos/salario_minimo_legal-crud/new'])
   }
 
   onEdit(id) {
-    this.router.navigate(['/pages/gestion_datos/salario_minimo_legal-crud'], { queryParams: { Id: id } })
+    this.router.navigate(['/pages/gestion_datos/salario_minimo_legal-crud/' + (id).toString()])
   }
 
   onDelete(id): void {

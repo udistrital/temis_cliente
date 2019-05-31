@@ -1,5 +1,5 @@
 export class IpcModel {
   Id: number;
-  AnoVigencia: Date;
+  AnoVigencia: number;
   IndiceIpc: number;
 }

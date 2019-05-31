@@ -29,8 +29,6 @@ export class IndicePrecioConsumoCrudComponent implements OnInit {
   ipc = new IpcModel;
   id: string;
 
-  AnoVigencia: string;
-
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
@@ -53,10 +51,7 @@ export class IndicePrecioConsumoCrudComponent implements OnInit {
       return
     }
 
-    if (this.AnoVigencia)
-      this.ipc.AnoVigencia = new Date(this.AnoVigencia.concat('T10:00:00-05:00'))
-
-    if (this.id)
+    if (this.id && this.id != 'new')
       this.IpcService.put('', this.ipc).subscribe(res => {
         this.goBack()
       })
@@ -81,10 +76,6 @@ export class IndicePrecioConsumoCrudComponent implements OnInit {
       if (this.id != null && this.id != 'new')
         this.IpcService.get((this.id).toString()).subscribe(res => {
           this.ipc = <IpcModel>res
-
-          if (this.ipc.AnoVigencia) {
-            this.AnoVigencia = new Date(this.ipc.AnoVigencia).toISOString().split('T')[0];
-          }
         })
     });
   }

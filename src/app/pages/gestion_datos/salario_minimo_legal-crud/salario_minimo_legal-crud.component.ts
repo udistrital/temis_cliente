@@ -60,7 +60,7 @@ export class SalarioMinimoLegalCrudComponent implements OnInit {
     if (this.FechaFinalizacionVigencia)
       this.sml.FechaFinalizacionVigencia = new Date(this.FechaFinalizacionVigencia.concat('T10:00:00-05:00'))
 
-    if (this.id)
+    if (this.id && this.id != 'new')
       this.SalarioMinimoService.put('', this.sml).subscribe(res => {
         this.goBack()
       })

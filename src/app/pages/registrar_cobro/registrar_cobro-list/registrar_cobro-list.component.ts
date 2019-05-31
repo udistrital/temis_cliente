@@ -11,6 +11,8 @@ import { PersonaService } from '../../../@core/data/persona.service';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
+import { ExperienciaLaboralModel } from '../../../@core/data/models/experiencia_laboral';
+import { MontoAceptadoModel } from '../../../@core/data/models/monto_aceptado';
 
 @Component({
   selector: 'ngx-registrar-cobro-list',
@@ -21,15 +23,15 @@ export class RegistrarCobroListComponent implements OnInit {
   config: ToasterConfig;
 
   data: Array<any>;
-  RegistrarMontoAceptadoPorCobrarId: number;
-  MontoAceptado: any;
-  ExperienciaLaboral: any;
+  RegistrarMontoAceptadoPorCobrarId: string;
+
+  MontoAceptado = new MontoAceptadoModel;
+  ExperienciaLaboral = new ExperienciaLaboralModel;
   Usuario: any;
   Organizacion: any;
 
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
-    private http: HttpClient,
     private experienciaService: ExperienciaService,
     private organizacionService: OrganizacionService,
     private usuarioService: PersonaService,
@@ -52,49 +54,47 @@ export class RegistrarCobroListComponent implements OnInit {
   loadData(): void {
     this.data = <Array<any>>[]
 
-    this.route.queryParams
-      .subscribe(params => {
+    this.route.paramMap.subscribe(params => {
+      this.RegistrarMontoAceptadoPorCobrarId = params.get('RegistrarMontoAceptadoPorCobrarId');
 
-        this.RegistrarMontoAceptadoPorCobrarId = params['RegistrarMontoAceptadoPorCobrarId'];
+      if (this.RegistrarMontoAceptadoPorCobrarId != null) {
+        this.MontoAceptadoCobrarService.get((this.RegistrarMontoAceptadoPorCobrarId).toString()).subscribe(res => {
+          this.MontoAceptado = <MontoAceptadoModel>res;
 
-        if (this.RegistrarMontoAceptadoPorCobrarId != null)
-          this.MontoAceptadoCobrarService.get((this.RegistrarMontoAceptadoPorCobrarId).toString()).subscribe(res => {
-            this.MontoAceptado = res;
+          this.experienciaService.get((this.MontoAceptado.ExperienciaLaboralId).toString()).subscribe(res => {
+            this.ExperienciaLaboral = <ExperienciaLaboralModel>res;
 
-            this.experienciaService.get((this.MontoAceptado.ExperienciaLaboralId).toString()).subscribe(res => {
-              this.ExperienciaLaboral = res;
+            this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
+              this.Organizacion = res
+            })
 
-              this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
-                this.Organizacion = res
-              })
-
-              this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
-                this.Usuario = res
-              })
+            this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
+              this.Usuario = res
             })
           })
+        })
 
         this.RegistrarCobroService.get('?query=RegistrarMontoAceptadoPorCobrarId:' + (this.RegistrarMontoAceptadoPorCobrarId).toString())
           .subscribe(res => {
             this.data = <Array<any>>res
           })
-
-      });
+      }
+    });
   }
 
   ngOnInit() {
   }
 
   goBack() {
-    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list'], { queryParams: { ExperienciaLaboralId: 1 } })
+    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list/' + this.ExperienciaLaboral.Id])
   }
 
   onCreate() {
-    this.router.navigate(['/pages/registrar_cobro/registrar_cobro-crud'], { queryParams: { RegistrarMontoAceptadoPorCobrarId: this.RegistrarMontoAceptadoPorCobrarId } })
+    this.router.navigate(['/pages/registrar_cobro/registrar_cobro-crud/' + this.RegistrarMontoAceptadoPorCobrarId + '/new'])
   }
 
   onEdit(id) {
-    this.router.navigate(['/pages/registrar_cobro/registrar_cobro-crud'], { queryParams: { RegistrarMontoAceptadoPorCobrarId: this.RegistrarMontoAceptadoPorCobrarId, Id: id } })
+    this.router.navigate(['/pages/registrar_cobro/registrar_cobro-crud/' + this.RegistrarMontoAceptadoPorCobrarId + '/' + id])
   }
 
   onDelete(id): void {
@@ -111,43 +111,22 @@ export class RegistrarCobroListComponent implements OnInit {
     Swal(opt)
       .then((willDelete) => {
         if (willDelete.value) {
-          this.http.delete('http://localhost:8080/v1/registrar_recaudo/' + (id).toString(), {
-            headers: new HttpHeaders({
-              'Accept': 'application/json',
-            }),
-          }).subscribe(res => {
-            console.log(res);
+          this.RegistrarCobroService.delete('', id)
+            .subscribe(res => {
+              if (res !== null) {
+                this.loadData();
 
-            if (res !== null) {
-              this.loadData();
-              this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
-                this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
-                this.translate.instant('GLOBAL.confirmarEliminar'));
-            }
-          }, (error: HttpErrorResponse) => {
-            Swal({
-              type: 'error',
-              title: error.status + '',
-              text: this.translate.instant('ERROR.' + error.status),
-              confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            });
-          })
-
-          /*this.experienciaService.delete('experiencia_laboral', event.data).subscribe(res => {
-            if (res !== null) {
-              this.loadData();
-              this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
-                this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
-                this.translate.instant('GLOBAL.confirmarEliminar'));
-            }
-          }, (error: HttpErrorResponse) => {
-            Swal({
-              type: 'error',
-              title: error.status + '',
-              text: this.translate.instant('ERROR.' + error.status),
-              confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            });
-          });*/
+                this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
+                  this.translate.instant('GLOBAL.confirmarEliminar'));
+              }
+            }, (error: HttpErrorResponse) => {
+              Swal({
+                type: 'error',
+                title: error.status + '',
+                text: this.translate.instant('ERROR.' + error.status),
+                confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+              });
+            })
         }
       });
   }

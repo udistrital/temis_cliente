@@ -27,6 +27,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DtfService } from './data/dtf.service';
 import { IpcService } from './data/ipc.service';
 import { SalarioMinimoService } from './data/salario_minimo.service';
+import { RegistrarCobroModel } from './data/models/registrar_cobro';
 
 const socialLinks = [
   {
@@ -117,6 +118,7 @@ export const NB_CORE_PROVIDERS = [
     DtfService,
     IpcService,
     SalarioMinimoService,
+    RegistrarCobroModel,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

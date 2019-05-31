@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
+import { ExperienciaLaboralModel } from '../../../@core/data/models/experiencia_laboral';
 
 @Component({
   selector: 'ngx-monto-aceptado-list',
@@ -18,12 +19,12 @@ import 'style-loader!angular2-toaster/toaster.css';
 })
 export class MontoAceptadoListComponent implements OnInit {
   config: ToasterConfig;
-  
-  ExperienciaLaboralId: number;
-  UsuarioId: number;
+
+  ExperienciaLaboralId: string;
+  UsuarioId: string;
 
   data: Array<any>;
-  ExperienciaLaboral: any;
+  ExperienciaLaboral = new ExperienciaLaboralModel;
   Organizacion: any;
   Usuario: any;
 
@@ -37,7 +38,7 @@ export class MontoAceptadoListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router) {
 
-    this.loadData();
+    this.loadData()
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change...")
@@ -51,48 +52,47 @@ export class MontoAceptadoListComponent implements OnInit {
   loadData(): void {
     this.data = <Array<any>>[]
 
-    this.route.queryParams
-      .subscribe(params => {
-        this.ExperienciaLaboralId = params['ExperienciaLaboralId'];
-        
-        if (this.ExperienciaLaboralId != null) {
-          this.experienciaService.get((this.ExperienciaLaboralId).toString()).subscribe(res => {
-            this.ExperienciaLaboral = res
+    this.route.paramMap.subscribe(params => {
+      this.ExperienciaLaboralId = params.get('IdExperienciaLaboral');
 
-            this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
-              this.Organizacion = res
-            })
+      if (this.ExperienciaLaboralId != null) {
+        this.experienciaService.get((this.ExperienciaLaboralId).toString()).subscribe(res => {
+          this.ExperienciaLaboral = <ExperienciaLaboralModel>res
 
-            this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
-              this.Usuario = res
-            })
+          this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
+            this.Organizacion = res
           })
 
-          this.montoAceptadoService.get('?query=ExperienciaLaboralId:' + (this.ExperienciaLaboralId).toString()).subscribe(res => {
-            this.data = <Array<any>>res
+          this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
+            this.Usuario = res
           })
-        }
+        })
 
-      });
+        this.montoAceptadoService.get('?query=ExperienciaLaboralId:' + (this.ExperienciaLaboralId).toString()).subscribe(res => {
+          this.data = <Array<any>>res
+        })
+      }
+
+    });
   }
 
   ngOnInit() {
   }
 
   goBack() {
-    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list'], { queryParams: { usuarioId: this.ExperienciaLaboral.UsuarioId } })
+    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list/' + (this.ExperienciaLaboral.UsuarioId).toString()])
   }
 
   onCreate() {
-    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-crud'], { queryParams: { ExperienciaLaboralId: this.ExperienciaLaboralId } })
+    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-crud/' + (this.ExperienciaLaboralId).toString() + '/new'])
   }
 
   onEdit(id) {
-    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-crud'], { queryParams: { ExperienciaLaboralId: this.ExperienciaLaboralId, Id: id } })
+    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-crud/' + (this.ExperienciaLaboralId).toString() + '/' + (id).toString() ])
   }
 
   onRegistrarCobro(id) {
-    this.router.navigate(['/pages/registrar_cobro/registrar_cobro-list'], { queryParams: { RegistrarMontoAceptadoPorCobrarId: id } })
+    this.router.navigate(['/pages/registrar_cobro/registrar_cobro-list/' + (id).toString()])
   }
 
   onDelete(id): void {
@@ -109,25 +109,22 @@ export class MontoAceptadoListComponent implements OnInit {
     Swal(opt)
       .then((willDelete) => {
         if (willDelete.value) {
-          this.http.delete('http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/' + (id).toString(), {
-            headers: new HttpHeaders({
-              'Accept': 'application/json',
-            }),
-          }).subscribe(res => {
-            if (res !== null) {
-              this.loadData();
-              this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
-                this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
-                this.translate.instant('GLOBAL.confirmarEliminar'));
-            }
-          }, (error: HttpErrorResponse) => {
-            Swal({
-              type: 'error',
-              title: error.status + '',
-              text: this.translate.instant('ERROR.' + error.status),
-              confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            });
-          })
+          this.montoAceptadoService.delete('', id)
+            .subscribe(res => {
+              if (res !== null) {
+                this.loadData();
+                this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
+                  this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
+                  this.translate.instant('GLOBAL.confirmarEliminar'));
+              }
+            }, (error: HttpErrorResponse) => {
+              Swal({
+                type: 'error',
+                title: error.status + '',
+                text: this.translate.instant('ERROR.' + error.status),
+                confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+              });
+            })
         }
       });
   }

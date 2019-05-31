@@ -18,7 +18,7 @@ import 'style-loader!angular2-toaster/toaster.css';
 export class ListExperienciaLaboralComponent implements OnInit {
   config: ToasterConfig;
   data: Array<any>;
-  id: number;
+  id: string;
   user: any;
   entities: Array<any>;
 
@@ -43,26 +43,24 @@ export class ListExperienciaLaboralComponent implements OnInit {
   }
 
   loadData(): void {
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get("usuarioId");
 
-    this.route.queryParams
-      .subscribe(params => {
-        this.id = params['usuarioId'];
+      if (this.id != null) {
+        this.userService.get((this.id).toString()).subscribe(res => {
+          this.user = res;
+        })
 
-        if (this.id != null) {
-          this.userService.get((this.id).toString()).subscribe(res => {
-            this.user = res;
-          })
+        this.organizacionService.get('').subscribe(res => {
+          this.entities = <Array<any>>res;
+        })
 
-          this.organizacionService.get('').subscribe(res => {
-            this.entities = <Array<any>>res;
-          })
+        this.experienciaService.get('?query=UsuarioId:' + (this.id).toString()).subscribe(res => {
+          this.data = <Array<any>>res;
+        })
+      }
 
-          this.experienciaService.get('?query=UsuarioId:' + (this.id).toString()).subscribe(res => {
-            this.data = <Array<any>>res;
-          })
-        }
-
-      });
+    });
   }
 
   ngOnInit() {
@@ -81,15 +79,15 @@ export class ListExperienciaLaboralComponent implements OnInit {
   }
 
   onCreate() {
-    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-crud'], { queryParams: { usuarioId: this.id } })
+    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-crud/' + (this.id).toString() + '/new'])
   }
 
   onEdit(id) {
-    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-crud'], { queryParams: { usuarioId: this.id, Id: id } })
+    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-crud/' + (this.id).toString() + '/' + id])
   }
 
   onCobro(id) {
-    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list'], { queryParams: { ExperienciaLaboralId: id } })
+    this.router.navigate(['/pages/gestion_informacion/monto_aceptado-list/' + (id).toString()])
   }
 
   onDelete(id): void {
@@ -106,15 +104,10 @@ export class ListExperienciaLaboralComponent implements OnInit {
     Swal(opt)
       .then((willDelete) => {
         if (willDelete.value) {
-          this.http.delete('http://localhost:8080/v1/experiencia_laboral/' + (id).toString(), {
-            headers: new HttpHeaders({
-              'Accept': 'application/json',
-            }),
-          }).subscribe(res => {
+          this.userService.delete('', id).subscribe(res => {
             if (res !== null) {
               this.loadData();
               this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
-                this.translate.instant('GLOBAL.experiencia_laboral') + ' ' +
                 this.translate.instant('GLOBAL.confirmarEliminar'));
             }
           }, (error: HttpErrorResponse) => {
