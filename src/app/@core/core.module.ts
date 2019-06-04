@@ -12,7 +12,7 @@ import { of as observableOf } from 'rxjs';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { DataModule } from './data/data.module';
 import { AnalyticsService } from './utils/analytics.service';
-import {DocumentoService} from './data/documento.service'
+import { DocumentoService } from './data/documento.service'
 import { NotificacionesService } from './utils/notificaciones.service';
 import { WebsocketService } from './utils/websocket.service';
 import { AuthGuard } from './_guards/auth.guard';
@@ -28,6 +28,10 @@ import { DtfService } from './data/dtf.service';
 import { IpcService } from './data/ipc.service';
 import { SalarioMinimoService } from './data/salario_minimo.service';
 import { RegistrarCobroModel } from './data/models/registrar_cobro';
+import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators/map';
+import * as jwt_decode from "jwt-decode";
 
 const socialLinks = [
   {
@@ -47,10 +51,24 @@ const socialLinks = [
   },
 ];
 
-export class NbSimpleRoleProvider extends NbRoleProvider {
-  getRole() {
+export class RoleProvider extends NbRoleProvider {
+
+  getRole(): Observable<string> {
+    console.log("GET ROLE???")
     // here you could provide any role based on any auth flow
-    return observableOf('guest');
+    const acces_token = window.localStorage.getItem('id_token');
+    if (acces_token) {
+      try {
+        console.log("TRY = ", jwt_decode(acces_token)['role'])
+        console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
+        return observableOf(jwt_decode(acces_token)['role']);
+      }
+      catch(Error) {
+        console.log("Error: ", Error)
+        return observableOf('guest')
+      }
+    } else
+      return observableOf('guest');
   }
 }
 
@@ -79,6 +97,9 @@ export const NB_CORE_PROVIDERS = [
       guest: {
         view: '*',
       },
+      ADMIN_CAMPUS: {
+        create: '*'
+      },
       user: {
         parent: 'guest',
         create: '*',
@@ -87,9 +108,9 @@ export const NB_CORE_PROVIDERS = [
       },
     },
   }).providers,
-
   {
-    provide: NbRoleProvider, useClass: NbSimpleRoleProvider,
+    provide: NbRoleProvider,
+    useClass: RoleProvider,
   },
   AnalyticsService,
 ];
@@ -97,7 +118,7 @@ export const NB_CORE_PROVIDERS = [
 @NgModule({
   imports: [
     CommonModule,
-    StoreModule.forRoot(rootReducer),
+    StoreModule.forRoot(rootReducer)
   ],
   exports: [
     NbAuthModule,
