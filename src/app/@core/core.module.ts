@@ -6,7 +6,7 @@ import { MontoAceptadoCobrarService } from './data/monto_aceptado_cobrar.service
 import { RegistrarCobroService } from './data/registrar_cobro.service';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbAuthModule, NbDummyAuthStrategy } from '@nebular/auth';
+import { NbAuthModule, NbDummyAuthStrategy, NbTokenLocalStorage, NbTokenStorage } from '@nebular/auth';
 import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
 import { throwIfAlreadyLoaded } from './module-import-guard';
@@ -32,38 +32,31 @@ import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import * as jwt_decode from "jwt-decode";
+import { Injectable } from '@angular/core';
+import { ImplicitAutenticationService } from './utils/implicit_autentication.service';
 
-const socialLinks = [
-  {
-    url: 'https://github.com/akveo/nebular',
-    target: '_blank',
-    icon: 'socicon-github',
-  },
-  {
-    url: 'https://www.facebook.com/akveo/',
-    target: '_blank',
-    icon: 'socicon-facebook',
-  },
-  {
-    url: 'https://twitter.com/akveo_inc',
-    target: '_blank',
-    icon: 'socicon-twitter',
-  },
-];
+@Injectable()
+export class RoleProvider implements NbRoleProvider {
 
-export class RoleProvider extends NbRoleProvider {
+  constructor(private authService: NbAuthService,
+    private authToken: ImplicitAutenticationService) {
+  }
 
   getRole(): Observable<string> {
     console.log("GET ROLE???")
+    console.log(this.authService.getToken())
+
+    console.log(this.authToken.getPayload())
+
     // here you could provide any role based on any auth flow
     const acces_token = window.localStorage.getItem('id_token');
     if (acces_token) {
       try {
         console.log("TRY = ", jwt_decode(acces_token)['role'])
         console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
-        return observableOf(jwt_decode(acces_token)['role']);
+        return observableOf('guest');
       }
-      catch(Error) {
+      catch (Error) {
         console.log("Error: ", Error)
         return observableOf('guest')
       }
@@ -74,30 +67,28 @@ export class RoleProvider extends NbRoleProvider {
 
 export const NB_CORE_PROVIDERS = [
   ...DataModule.forRoot().providers,
-  ...NbAuthModule.forRoot({
 
+  ...NbAuthModule.forRoot({
     strategies: [
       NbDummyAuthStrategy.setup({
         name: 'email',
-        delay: 3000,
       }),
     ],
-    forms: {
-      login: {
-        socialLinks: socialLinks,
-      },
-      register: {
-        socialLinks: socialLinks,
-      },
-    },
+    forms: {},
   }).providers,
+  {
+    provide: NbTokenStorage,
+    useValue: {
+      get: () => {
+        return window.localStorage.getItem('id_token');
+      }
+    }
+  },
 
   NbSecurityModule.forRoot({
     accessControl: {
       guest: {
         view: '*',
-      },
-      ADMIN_CAMPUS: {
         create: '*'
       },
       user: {
@@ -111,6 +102,25 @@ export const NB_CORE_PROVIDERS = [
   {
     provide: NbRoleProvider,
     useClass: RoleProvider,
+    /*useValue: {
+      getRole: () => {
+        console.log("GET ROLE???")
+        // here you could provide any role based on any auth flow
+        const acces_token = window.localStorage.getItem('id_token');
+        if (acces_token) {
+          try {
+            console.log("TRY = ", jwt_decode(acces_token)['role'])
+            console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
+            return observableOf(jwt_decode(acces_token)['role']);
+          }
+          catch (Error) {
+            console.log("Error: ", Error)
+            return observableOf('guest')
+          }
+        } else
+          return observableOf('guest');
+      }
+    }*/
   },
   AnalyticsService,
 ];

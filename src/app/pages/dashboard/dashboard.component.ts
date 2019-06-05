@@ -1,6 +1,9 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
-import { takeWhile } from 'rxjs/operators/takeWhile' ;
+import { takeWhile } from 'rxjs/operators/takeWhile';
+import { NbAccessChecker } from '@nebular/security';
+import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
+import { CoreModule } from '../../@core/core.module';
 
 interface CardSettings {
   title: string;
@@ -52,34 +55,40 @@ export class DashboardComponent implements OnDestroy {
     cosmic: CardSettings[];
     corporate: CardSettings[];
   } = {
-    default: this.commonStatusCardsSet,
-    cosmic: this.commonStatusCardsSet,
-    corporate: [
-      {
-        ...this.lightCard,
-        type: 'warning',
-      },
-      {
-        ...this.rollerShadesCard,
-        type: 'primary',
-      },
-      {
-        ...this.wirelessAudioCard,
-        type: 'danger',
-      },
-      {
-        ...this.coffeeMakerCard,
-        type: 'secondary',
-      },
-    ],
-  };
+      default: this.commonStatusCardsSet,
+      cosmic: this.commonStatusCardsSet,
+      corporate: [
+        {
+          ...this.lightCard,
+          type: 'warning',
+        },
+        {
+          ...this.rollerShadesCard,
+          type: 'primary',
+        },
+        {
+          ...this.wirelessAudioCard,
+          type: 'danger',
+        },
+        {
+          ...this.coffeeMakerCard,
+          type: 'secondary',
+        },
+      ],
+    };
 
-  constructor(private themeService: NbThemeService) {
+  constructor(private themeService: NbThemeService,
+    public accessChecker: NbAccessChecker,
+    public roleProvider: NbRoleProvider) {
+
+    console.log(accessChecker.isGranted)
+    console.log(roleProvider.getRole())
+
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.statusCards = this.statusCardsByThemes[theme.name];
-    });
+      });
   }
 
   ngOnDestroy() {

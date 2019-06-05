@@ -24,6 +24,8 @@ export class AutenticationService {
         }
         this.logOut = '';
         this.timer();
+
+        console.log("AutenticationService")
     }
 
     public getLogoutUrl() {
@@ -67,6 +69,9 @@ export class AutenticationService {
     }
 
     public init() {
+
+        console.log("AutenticationService Init") 
+
         const queryString = location.search.substring(1);
         const regex = /([^&=]+)=([^&]*)/g;
         let m;
@@ -146,7 +151,7 @@ export class AutenticationService {
     refresh() {
         this.params = Config.LOCAL.TOKEN;
         const url = ''; // this.params.REFRESH_TOKEN + '?' +
-            'grant_type=' + encodeURIComponent('refresh_token') + '&' +
+        'grant_type=' + encodeURIComponent('refresh_token') + '&' +
             'refresh_token=' + encodeURIComponent(window.sessionStorage.getItem('refresh_token')) + '&' +
             'redirect_uri=' + encodeURIComponent(window.location.href);
         const dato = {};
