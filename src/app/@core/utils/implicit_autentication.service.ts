@@ -48,9 +48,7 @@ export class ImplicitAutenticationService {
     }
 
     getPayload() {
-        console.log(this.live)
-
-        if (this.live) {
+        if (this.live()) {
             const id_token = window.localStorage.getItem('id_token').split('.');
             return JSON.parse(atob(id_token[1]));
         } else {
@@ -59,12 +57,7 @@ export class ImplicitAutenticationService {
     }
 
     public live() {
-        console.log(window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined)
-        console.log(window.localStorage.getItem('id_token') !== null)
-        console.log(window.localStorage.getItem('id_token') !== undefined)
-        console.log(window.localStorage.getItem('id_token'))
-
-        if (window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined) {
+        if (window.localStorage.getItem('id_token')) {
             this.bearer = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

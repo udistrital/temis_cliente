@@ -81,7 +81,10 @@ export class DashboardComponent implements OnDestroy {
     public accessChecker: NbAccessChecker,
     public roleProvider: NbRoleProvider) {
 
-    console.log(accessChecker.isGranted)
+    this.accessChecker.isGranted('view', 'guest').subscribe(res => {
+      console.log(res)
+    })
+
     console.log(roleProvider.getRole())
 
     this.themeService.getJsTheme()

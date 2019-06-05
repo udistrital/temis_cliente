@@ -43,21 +43,19 @@ export class RoleProvider implements NbRoleProvider {
   }
 
   getRole(): Observable<string> {
-    console.log("GET ROLE???")
-    console.log(this.authService.getToken())
+    var token = this.authToken.getPayload()
+    //console.log(this.authToken.getPayload())
 
-    console.log(this.authToken.getPayload())
-
-    // here you could provide any role based on any auth flow
-    const acces_token = window.localStorage.getItem('id_token');
-    if (acces_token) {
+    // here you could provide any role based on any auth flow|1
+    //const acces_token = window.localStorage.getItem('id_token');
+    if (token) {
       try {
-        console.log("TRY = ", jwt_decode(acces_token)['role'])
-        console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
-        return observableOf('guest');
+        //console.log("TRY = ", jwt_decode(acces_token)['role'])
+        //console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
+        return observableOf(token['role']);
       }
       catch (Error) {
-        console.log("Error: ", Error)
+        //console.log("Error: ", Error)
         return observableOf('guest')
       }
     } else
