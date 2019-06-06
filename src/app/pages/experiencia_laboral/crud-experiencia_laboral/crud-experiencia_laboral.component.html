@@ -40,8 +40,7 @@
                 aria-label="horas" aria-describedby="basic-addon-d" [(ngModel)]="experienciaLaboral.DiasLaboradosSemana" name="diasxsemana">
             </div>
 
-            <button type="submit" class="btn btn-primary"
-              (click)="save()">Guardar</button>
+            <button type="submit" class="btn btn-primary" *ngIf="create" (click)="save()">Guardar</button>
           </form>
         </div>
 

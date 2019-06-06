@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-body>
 
-    <button (click)="goBack()" class="btn-sm btn btn-danger">Cancelar</button>
+    <button *ngIf="create" (click)="goBack()" class="btn-sm btn btn-danger">Cancelar</button>
 
     <nb-tabset fullWidth>
       <nb-tab tabTitle="Formulario Índice de precio de consumo (IPC)">

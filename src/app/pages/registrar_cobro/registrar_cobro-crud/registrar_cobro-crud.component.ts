@@ -7,6 +7,7 @@ import { RegistrarCobroModel } from '../../../@core/data/models/registrar_cobro'
 import { MontoAceptadoModel } from '../../../@core/data/models/monto_aceptado';
 import { MontoAceptadoCobrarService } from '../../../@core/data/monto_aceptado_cobrar.service';
 import { RegistrarCobroService } from '../../../@core/data/registrar_cobro.service';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
@@ -28,6 +29,8 @@ export class RegistrarCobroCrudComponent implements OnInit {
   RegistrarMontoAceptadoPorCobrarId: string;
   id: string;
 
+  create: boolean;
+
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
@@ -35,7 +38,11 @@ export class RegistrarCobroCrudComponent implements OnInit {
     private http: HttpClient,
     private MontoService: MontoAceptadoCobrarService,
     private RegistrarCobroService: RegistrarCobroService,
-    private router: Router) {
+    private router: Router,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+    this.get_access_rights()
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change...")
     });
@@ -43,6 +50,18 @@ export class RegistrarCobroCrudComponent implements OnInit {
 
   useLanguage(language: string) {
     this.translate.use(language);
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
   }
 
   save() {

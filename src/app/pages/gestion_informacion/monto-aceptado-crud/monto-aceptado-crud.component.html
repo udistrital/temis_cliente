@@ -45,7 +45,7 @@
               aria-label="mesada" aria-describedby="basic-addon-d" [(ngModel)]="MontoAceptado.ValorMesadaPension" name="mesadaPensional">
             </div>
 
-            <button type="submit" class="btn btn-primary" (click)="save()">Guardar</button>
+            <button type="submit" class="btn btn-primary" (click)="save()" *ngIf="create">Guardar</button>
           </form>
         </div>
 

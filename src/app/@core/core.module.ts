@@ -44,18 +44,15 @@ export class RoleProvider implements NbRoleProvider {
 
   getRole(): Observable<string> {
     var token = this.authToken.getPayload()
-    //console.log(this.authToken.getPayload())
 
-    // here you could provide any role based on any auth flow|1
-    //const acces_token = window.localStorage.getItem('id_token');
     if (token) {
       try {
-        //console.log("TRY = ", jwt_decode(acces_token)['role'])
-        //console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
-        return observableOf(token['role']);
+        if (typeof token != 'string')
+          return observableOf(token['role'][0]);
+        else
+          return observableOf(token)
       }
       catch (Error) {
-        //console.log("Error: ", Error)
         return observableOf('guest')
       }
     } else
@@ -85,40 +82,29 @@ export const NB_CORE_PROVIDERS = [
 
   NbSecurityModule.forRoot({
     accessControl: {
+      ADMIN_CAMPUS: {
+        view: '*',
+        create: '*',
+        delete: '*',
+        edit: '*'
+      },
+      "Internal/everyone": {
+        view: '*'
+      },
+      "Internal/selfsignup": {
+        view: '*'
+      },
+      "Application/utest01_DefaultApplication_SANDBOX": {
+        view: '*'
+      },
       guest: {
         view: '*',
-        create: '*'
-      },
-      user: {
-        parent: 'guest',
-        create: '*',
-        edit: '*',
-        remove: '*',
       },
     },
   }).providers,
   {
     provide: NbRoleProvider,
     useClass: RoleProvider,
-    /*useValue: {
-      getRole: () => {
-        console.log("GET ROLE???")
-        // here you could provide any role based on any auth flow
-        const acces_token = window.localStorage.getItem('id_token');
-        if (acces_token) {
-          try {
-            console.log("TRY = ", jwt_decode(acces_token)['role'])
-            console.log("? > ", observableOf(jwt_decode(acces_token)['role']))
-            return observableOf(jwt_decode(acces_token)['role']);
-          }
-          catch (Error) {
-            console.log("Error: ", Error)
-            return observableOf('guest')
-          }
-        } else
-          return observableOf('guest');
-      }
-    }*/
   },
   AnalyticsService,
 ];

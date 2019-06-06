@@ -15,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IpcModel } from '../../../@core/data/models/ipc';
 import { formatDate } from '@angular/common';
 import { IpcService } from '../../../@core/data/ipc.service';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
@@ -29,15 +30,33 @@ export class IndicePrecioConsumoCrudComponent implements OnInit {
   ipc = new IpcModel;
   id: string;
 
+  create: boolean;
+
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
     private route: ActivatedRoute,
     private router: Router,
-    private IpcService: IpcService) {
+    private IpcService: IpcService,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+    this.get_access_rights()
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change....")
     });
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
   }
 
   useLanguage(language: string) {

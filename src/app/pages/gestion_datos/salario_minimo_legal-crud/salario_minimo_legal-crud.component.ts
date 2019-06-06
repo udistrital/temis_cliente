@@ -15,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SalarioMinimoLegalModel } from '../../../@core/data/models/salario_minimo_legal';
 import { SalarioMinimoService } from '../../../@core/data/salario_minimo.service';
 import { formatDate } from '@angular/common';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
@@ -32,15 +33,48 @@ export class SalarioMinimoLegalCrudComponent implements OnInit {
   FechaInicioVigencia: string;
   FechaFinalizacionVigencia: string;
 
+  create: boolean;
+  view: boolean;
+  delete: boolean;
+  edit: boolean;
+
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
     private route: ActivatedRoute,
     private router: Router,
-    private SalarioMinimoService: SalarioMinimoService) {
+    private SalarioMinimoService: SalarioMinimoService,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+    this.get_access_rights()
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change....")
     });
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
+
+    this.accessChecker.isGranted('view', roles).subscribe(res => {
+      this.view = res
+    })
+
+    this.accessChecker.isGranted('edit', roles).subscribe(res => {
+      this.edit = res
+    })
+
+    this.accessChecker.isGranted('delete', roles).subscribe(res => {
+      this.delete = res
+    })
   }
 
   useLanguage(language: string) {

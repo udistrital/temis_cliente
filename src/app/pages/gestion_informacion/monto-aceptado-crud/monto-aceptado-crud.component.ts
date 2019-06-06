@@ -4,10 +4,11 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MontoAceptadoModel } from '../../../@core/data/models/monto_aceptado';
+import { MontoAceptadoCobrarService } from '../../../@core/data/monto_aceptado_cobrar.service';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
-import { MontoAceptadoCobrarService } from '../../../@core/data/monto_aceptado_cobrar.service';
 
 @Component({
   selector: 'ngx-monto-aceptado-crud',
@@ -25,13 +26,19 @@ export class MontoAceptadoCrudComponent implements OnInit {
   FechaPension: string;
   FechaResolucionPension: string;
 
+  create: boolean;
+
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    private MontoAceptadoService: MontoAceptadoCobrarService) {
+    private MontoAceptadoService: MontoAceptadoCobrarService,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+    this.get_access_rights()
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change...")
     });
@@ -39,6 +46,18 @@ export class MontoAceptadoCrudComponent implements OnInit {
 
   useLanguage(language: string) {
     this.translate.use(language);
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
   }
 
   save(): void {

@@ -13,11 +13,12 @@ import { DocumentoService } from '../../../@core/data/documento.service';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DtfModel } from '../../../@core/data/models/dtf';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
+import { DtfService } from '../../../@core/data/dtf.service';
+import { formatDate } from '@angular/common';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
-import { DtfService } from '../../../@core/data/dtf.service';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'dtf-crud',
@@ -33,16 +34,33 @@ export class DtfCrudComponent implements OnInit {
   FechaInicioVigencia: string;
   FechaFinalizacionVigencia: string;
 
+  create: boolean;
+
   constructor(
     private translate: TranslateService,
     private toasterService: ToasterService,
     private route: ActivatedRoute,
     private router: Router,
-    private DtfService: DtfService) {
+    private DtfService: DtfService,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change....")
     });
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
   }
 
   useLanguage(language: string) {

@@ -17,6 +17,10 @@ interface CardSettings {
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnDestroy {
+  create: boolean;
+  view: boolean;
+  delete: boolean;
+  edit: boolean;
 
   private alive = true;
 
@@ -81,17 +85,42 @@ export class DashboardComponent implements OnDestroy {
     public accessChecker: NbAccessChecker,
     public roleProvider: NbRoleProvider) {
 
-    this.accessChecker.isGranted('view', 'guest').subscribe(res => {
-      console.log(res)
-    })
-
-    console.log(roleProvider.getRole())
+    this.get_access_rights()
 
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.statusCards = this.statusCardsByThemes[theme.name];
       });
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+      console.log(typeof res, res)
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+      console.log(res)
+    })
+
+    this.accessChecker.isGranted('view', roles).subscribe(res => {
+      this.view = res
+      console.log(res)
+    })
+
+    this.accessChecker.isGranted('edit', roles).subscribe(res => {
+      this.edit = res
+      console.log(res)
+    })
+
+    this.accessChecker.isGranted('delete', roles).subscribe(res => {
+      this.delete = res
+      console.log(res)
+    })
   }
 
   ngOnDestroy() {

@@ -16,7 +16,7 @@
               <th>Fecha de inicio</th>
               <th>Fecha de finalización</th>
               <th>Tasa de interés</th>
-              <th>Acciones</th>
+              <th *ngIf="delete || edit">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -26,12 +26,12 @@
               <td> {{ item.FechaInicioVigencia | date }} </td>
               <td> {{ item.FechaFinalizacionVigencia | date }} </td>
               <td> {{ item.TasaInteres }} </td>
-              <td>
-                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Editar"></i>
+              <td *ngIf="delete || edit">
+                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" 
+                data-toggle="tooltip" data-placement="top" title="Editar" *ngIf="edit"></i>
 
-                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Eliminar"></i>
+                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" 
+                data-toggle="tooltip" data-placement="top" title="Eliminar" *ngIf="delete"></i>
               </td>
             </tr>
           </tbody>

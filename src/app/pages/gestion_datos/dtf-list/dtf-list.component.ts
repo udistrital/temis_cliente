@@ -3,10 +3,11 @@ import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-t
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
+import { DtfService } from '../../../@core/data/dtf.service';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
-import { DtfService } from '../../../@core/data/dtf.service';
 
 @Component({
   selector: 'dtf-list',
@@ -17,16 +18,48 @@ export class DtfListComponent implements OnInit {
   config: ToasterConfig;
   data: Array<any>;
 
+  create: boolean;
+  view: boolean;
+  delete: boolean;
+  edit: boolean;
+
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
     private DtfService: DtfService,
-    private router: Router) {
+    private router: Router,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
 
+    this.get_access_rights()
     this.loadData();
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language Change...")
     });
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
+
+    this.accessChecker.isGranted('view', roles).subscribe(res => {
+      this.view = res
+    })
+
+    this.accessChecker.isGranted('edit', roles).subscribe(res => {
+      this.edit = res
+    })
+
+    this.accessChecker.isGranted('delete', roles).subscribe(res => {
+      this.delete = res
+    })
   }
 
   useLanguage(language: string) {

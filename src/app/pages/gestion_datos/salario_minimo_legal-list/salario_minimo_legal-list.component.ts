@@ -4,6 +4,7 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SalarioMinimoService } from '../../../@core/data/salario_minimo.service';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
@@ -17,10 +18,19 @@ export class SalarioMinimoLegalListComponent implements OnInit {
   config: ToasterConfig;
   data: Array<any>;
 
+  create: boolean;
+  view: boolean;
+  delete: boolean;
+  edit: boolean;
+
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
     private SalarioMinimoService: SalarioMinimoService,
-    private router: Router) {
+    private router: Router,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+      this.get_access_rights()
 
     this.loadData();
 
@@ -38,6 +48,35 @@ export class SalarioMinimoLegalListComponent implements OnInit {
 
     this.SalarioMinimoService.get('').subscribe(res => {
       this.data = <Array<any>>res;
+    })
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+      console.log(typeof res, res)
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+      console.log(res)
+    })
+
+    this.accessChecker.isGranted('view', roles).subscribe(res => {
+      this.view = res
+      console.log(res)
+    })
+
+    this.accessChecker.isGranted('edit', roles).subscribe(res => {
+      this.edit = res
+      console.log(res)
+    })
+
+    this.accessChecker.isGranted('delete', roles).subscribe(res => {
+      this.delete = res
+      console.log(res)
     })
   }
 

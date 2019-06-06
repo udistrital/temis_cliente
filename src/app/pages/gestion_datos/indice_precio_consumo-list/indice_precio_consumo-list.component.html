@@ -2,7 +2,7 @@
   <nb-card-body>
     <toaster-container [toasterconfig]="config"></toaster-container>
 
-    <button (click)="onCreate()" class="btn-sm btn btn-primary">Crear</button>
+    <button *ngIf="create" (click)="onCreate()" class="btn-sm btn btn-primary">Crear</button>
 
     <nb-tabset fullWidth>
       <nb-tab tabTitle="Índice de precio de consumo (IPC)">
@@ -14,7 +14,7 @@
               <th>Id</th>
               <th>Año de vigencia</th>
               <th>Índice</th>
-              <th>Acciones</th>
+              <th *ngIf="edit || delete">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -22,12 +22,12 @@
               <td> {{ item.Id }} </td>
               <td> {{ item.AnoVigencia | date }} </td>
               <td> {{ item.IndiceIpc }} </td>
-              <td>
-                <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Editar"></i>
+              <td *ngIf="edit || delete">
+                <i *ngIf="edit" class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" 
+                data-toggle="tooltip" data-placement="top" title="Editar"></i>
 
-                <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" data-toggle="tooltip" data-placement="top"
-                  title="Eliminar"></i>
+                <i *ngIf="delete" class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" 
+                data-toggle="tooltip" data-placement="top" title="Eliminar"></i>
               </td>
             </tr>
           </tbody>

@@ -6,6 +6,7 @@ import { PersonaService } from '../../../@core/data/persona.service';
 import { ExperienciaService } from '../../../@core/data/experiencia.service';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
@@ -22,6 +23,11 @@ export class ListExperienciaLaboralComponent implements OnInit {
   user: any;
   entities: Array<any>;
 
+  create: boolean;
+  view: boolean;
+  delete: boolean;
+  edit: boolean;
+
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
     private http: HttpClient,
@@ -29,13 +35,41 @@ export class ListExperienciaLaboralComponent implements OnInit {
     private userService: PersonaService,
     private organizacionService: OrganizacionService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+    this.get_access_rights()
 
     this.loadData();
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language change...")
     });
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
+
+    this.accessChecker.isGranted('view', roles).subscribe(res => {
+      this.view = res
+    })
+
+    this.accessChecker.isGranted('edit', roles).subscribe(res => {
+      this.edit = res
+    })
+
+    this.accessChecker.isGranted('delete', roles).subscribe(res => {
+      this.delete = res
+    })
   }
 
   useLanguage(language: string) {
