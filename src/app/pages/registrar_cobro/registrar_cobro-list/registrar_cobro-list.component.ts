@@ -8,11 +8,12 @@ import { ExperienciaService } from '../../../@core/data/experiencia.service';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PersonaService } from '../../../@core/data/persona.service';
+import { ExperienciaLaboralModel } from '../../../@core/data/models/experiencia_laboral';
+import { MontoAceptadoModel } from '../../../@core/data/models/monto_aceptado';
+import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
-import { ExperienciaLaboralModel } from '../../../@core/data/models/experiencia_laboral';
-import { MontoAceptadoModel } from '../../../@core/data/models/monto_aceptado';
 
 @Component({
   selector: 'ngx-registrar-cobro-list',
@@ -30,6 +31,11 @@ export class RegistrarCobroListComponent implements OnInit {
   Usuario: any;
   Organizacion: any;
 
+  create: boolean;
+  view: boolean;
+  delete: boolean;
+  edit: boolean;
+
   constructor(private translate: TranslateService,
     private toasterService: ToasterService,
     private experienciaService: ExperienciaService,
@@ -38,7 +44,11 @@ export class RegistrarCobroListComponent implements OnInit {
     private MontoAceptadoCobrarService: MontoAceptadoCobrarService,
     private RegistrarCobroService: RegistrarCobroService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private roleProvider: NbRoleProvider,
+    private accessChecker: NbAccessChecker) {
+
+    this.get_access_rights()
 
     this.loadData();
 
@@ -49,6 +59,30 @@ export class RegistrarCobroListComponent implements OnInit {
 
   useLanguage(language: string) {
     this.translate.use(language);
+  }
+
+  get_access_rights() {
+    let roles
+
+    this.roleProvider.getRole().subscribe(res => {
+      roles = res
+    })
+
+    this.accessChecker.isGranted('create', roles).subscribe(res => {
+      this.create = res
+    })
+
+    this.accessChecker.isGranted('view', roles).subscribe(res => {
+      this.view = res
+    })
+
+    this.accessChecker.isGranted('edit', roles).subscribe(res => {
+      this.edit = res
+    })
+
+    this.accessChecker.isGranted('delete', roles).subscribe(res => {
+      this.delete = res
+    })
   }
 
   loadData(): void {

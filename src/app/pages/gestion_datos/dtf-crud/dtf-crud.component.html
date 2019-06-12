@@ -45,8 +45,7 @@
               aria-label="dtf" aria-describedby="basic-addon-h" [(ngModel)]="dtf.TasaInteres" name="tasa">
             </div>
 
-            <button type="submit" class="btn btn-primary" 
-            (click)="save($event, form)">Guardar</button>
+            <button type="submit" class="btn btn-primary" *ngIf="create" (click)="save($event, form)">Guardar</button>
           </form>
         </div>
 

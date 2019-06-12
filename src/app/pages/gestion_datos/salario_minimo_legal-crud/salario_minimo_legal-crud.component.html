@@ -39,7 +39,7 @@
               aria-label="sml" aria-describedby="basic-addon-h" [(ngModel)]="sml.TasaInteres" name="tasa">
             </div>
 
-            <button type="submit" class="btn btn-primary" 
+            <button type="submit" class="btn btn-primary" *ngIf="create"
             (click)="save($event, form)">Guardar</button>
           </form>
         </div>

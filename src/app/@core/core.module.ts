@@ -6,7 +6,7 @@ import { MontoAceptadoCobrarService } from './data/monto_aceptado_cobrar.service
 import { RegistrarCobroService } from './data/registrar_cobro.service';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbAuthModule, NbDummyAuthStrategy } from '@nebular/auth';
+import { NbAuthModule, NbDummyAuthStrategy, NbTokenLocalStorage, NbTokenStorage } from '@nebular/auth';
 import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
 import { throwIfAlreadyLoaded } from './module-import-guard';
@@ -39,68 +39,82 @@ import { TipoDedicacionService } from './data/tipo_dedicacion.service';
 import { TipoVinculacionService } from './data/tipo_vinculacion.service';
 import { CargoService } from './data/cargo.service';
 import { DatoAdicionalExperienciaLaboralService } from './data/dato_adicional_experiencia_laboral.service';
+import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators/map';
+import { Injectable } from '@angular/core';
+import { ImplicitAutenticationService } from './utils/implicit_autentication.service';
 
-const socialLinks = [
-  {
-    url: 'https://github.com/akveo/nebular',
-    target: '_blank',
-    icon: 'socicon-github',
-  },
-  {
-    url: 'https://www.facebook.com/akveo/',
-    target: '_blank',
-    icon: 'socicon-facebook',
-  },
-  {
-    url: 'https://twitter.com/akveo_inc',
-    target: '_blank',
-    icon: 'socicon-twitter',
-  },
-];
+@Injectable()
+export class RoleProvider implements NbRoleProvider {
 
-export class NbSimpleRoleProvider extends NbRoleProvider {
-  getRole() {
-    // here you could provide any role based on any auth flow
-    return observableOf('guest');
+  constructor(private authService: NbAuthService,
+    private authToken: ImplicitAutenticationService) {
+  }
+
+  getRole(): Observable<string> {
+    var token = this.authToken.getPayload()
+
+    if (token) {
+      try {
+        if (typeof token != 'string')
+          return observableOf(token['role'][0]);
+        else
+          return observableOf(token)
+      }
+      catch (Error) {
+        return observableOf('guest')
+      }
+    } else
+      return observableOf('guest');
   }
 }
 
 export const NB_CORE_PROVIDERS = [
   ...DataModule.forRoot().providers,
-  ...NbAuthModule.forRoot({
 
+  ...NbAuthModule.forRoot({
     strategies: [
       NbDummyAuthStrategy.setup({
         name: 'email',
-        delay: 3000,
       }),
     ],
-    forms: {
-      login: {
-        socialLinks: socialLinks,
-      },
-      register: {
-        socialLinks: socialLinks,
-      },
-    },
+    forms: {},
   }).providers,
+  {
+    provide: NbTokenStorage,
+    useValue: {
+      get: () => {
+        return window.localStorage.getItem('id_token');
+      }
+    }
+  },
 
   NbSecurityModule.forRoot({
     accessControl: {
+      ADMIN_CAMPUS: {
+        view: '*',
+        create: '*',
+        delete: '*',
+        edit: '*'
+      },
+      "Internal/everyone": {
+        view: '*'
+      },
+      "Internal/selfsignup": {
+        view: '*'
+      },
+      "Application/utest01_DefaultApplication_SANDBOX": {
+        view: '*'
+      },
       guest: {
         view: '*',
       },
-      user: {
-        parent: 'guest',
-        create: '*',
-        edit: '*',
-        remove: '*',
-      },
     },
   }).providers,
-
   {
-    provide: NbRoleProvider, useClass: NbSimpleRoleProvider,
+    provide: NbRoleProvider,
+    useClass: RoleProvider,
   },
   AnalyticsService,
 ];
@@ -108,7 +122,7 @@ export const NB_CORE_PROVIDERS = [
 @NgModule({
   imports: [
     CommonModule,
-    StoreModule.forRoot(rootReducer),
+    StoreModule.forRoot(rootReducer)
   ],
   exports: [
     NbAuthModule,

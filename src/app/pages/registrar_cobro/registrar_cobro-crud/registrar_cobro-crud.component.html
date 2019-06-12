@@ -54,7 +54,7 @@
               [(ngModel)]="RegistrarMontoAceptadoPorCobrarData.ObservacionesPago" name="observacionPago">
             </div>
 
-            <button type="submit" class="btn btn-primary" (click)="save()">Guardar</button>
+            <button type="submit" class="btn btn-primary" (click)="save()" *ngIf="create">Guardar</button>
           </form>
         </div>
 

@@ -26,6 +26,8 @@ export class ImplicitAutenticationService {
         }
         this.logOut = '';
         this.timer();
+
+        console.log("ImplicitAutenticationService")
     }
 
     public logout() {
@@ -46,7 +48,7 @@ export class ImplicitAutenticationService {
     }
 
     getPayload() {
-        if (this.live) {
+        if (this.live()) {
             const id_token = window.localStorage.getItem('id_token').split('.');
             return JSON.parse(atob(id_token[1]));
         } else {
@@ -55,7 +57,7 @@ export class ImplicitAutenticationService {
     }
 
     public live() {
-        if (window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined) {
+        if (window.localStorage.getItem('id_token')) {
             this.bearer = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

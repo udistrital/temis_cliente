@@ -4,7 +4,7 @@
 
     <div class="btn-group btn-group-sm" role="group" aria-label="btn action">
       <button (click)="goBack()" class="btn-sm btn btn-secondary">Volver</button>
-      <button (click)="onCreate()" class="btn-sm btn btn-primary">Crear</button>
+      <button (click)="onCreate()" class="btn-sm btn btn-primary" *ngIf="create">Crear</button>
     </div>
 
     <nb-tabset fullWidth>
@@ -22,7 +22,7 @@
               <th>Fecha (hasta)</th>
               <th>Valor a pagar</th>
               <th>Medio de pago</th>
-              <th>Acciones</th>
+              <th *ngIf="edit || delete">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -34,12 +34,12 @@
               <td> {{ item.FechaHastaPago | date }} </td>
               <td> {{ item.ValorCuentaCobro }} </td>
               <td> {{ item.ObservacionesPago }} </td>
-              <td>
+              <td *ngIf="edit || delete">
                 <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)"
-                  data-toggle="tooltip" data-placement="top" title="Editar"></i>
+                  data-toggle="tooltip" data-placement="top" title="Editar" *ngIf="edit"></i>
 
                 <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)"
-                  data-toggle="tooltip" data-placement="top" title="Eliminar"></i>
+                  data-toggle="tooltip" data-placement="top" title="Eliminar" *ngIf="delete"></i>
               </td>
             </tr>
           </tbody>

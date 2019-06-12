@@ -87,7 +87,8 @@
         "ts-md5": "^1.2.4",
         "typeface-exo": "0.0.22",
         "web-animations-js": "2.2.5",
-        "zone.js": "^0.8.26"
+        "zone.js": "^0.8.26",
+        "jwt-decode": "latest"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.6.0",
