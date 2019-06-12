@@ -12,7 +12,7 @@ import { of as observableOf } from 'rxjs';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { DataModule } from './data/data.module';
 import { AnalyticsService } from './utils/analytics.service';
-import {DocumentoService} from './data/documento.service'
+import { DocumentoService } from './data/documento.service'
 import { NotificacionesService } from './utils/notificaciones.service';
 import { WebsocketService } from './utils/websocket.service';
 import { AuthGuard } from './_guards/auth.guard';
@@ -28,6 +28,17 @@ import { DtfService } from './data/dtf.service';
 import { IpcService } from './data/ipc.service';
 import { SalarioMinimoService } from './data/salario_minimo.service';
 import { RegistrarCobroModel } from './data/models/registrar_cobro';
+import { TipoRelacionOrganizacionService } from './data/tipo_relacion_organizacion.service';
+import { TipoOrganizacionService } from './data/tipo_organizacion.service';
+import { OrganizacionService } from './data/organizacion.service';
+import { RelacionOrganizacionService } from './data/relacion_organizacion.service';
+import { TipoEnteService } from './data/tipo_ente.service';
+import { IdentificacionService } from './data/identificacion.service';
+import { TipoIdentificacionService } from './data/tipo_identificacion.service';
+import { TipoDedicacionService } from './data/tipo_dedicacion.service';
+import { TipoVinculacionService } from './data/tipo_vinculacion.service';
+import { CargoService } from './data/cargo.service';
+import { DatoAdicionalExperienciaLaboralService } from './data/dato_adicional_experiencia_laboral.service';
 
 const socialLinks = [
   {
@@ -118,7 +129,18 @@ export const NB_CORE_PROVIDERS = [
     DtfService,
     IpcService,
     SalarioMinimoService,
+    TipoRelacionOrganizacionService,
+    TipoOrganizacionService,
+    OrganizacionService,
+    RelacionOrganizacionService,
     RegistrarCobroModel,
+    TipoEnteService,
+    IdentificacionService,
+    TipoIdentificacionService,
+    TipoDedicacionService,
+    TipoVinculacionService,
+    CargoService,
+    DatoAdicionalExperienciaLaboralService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

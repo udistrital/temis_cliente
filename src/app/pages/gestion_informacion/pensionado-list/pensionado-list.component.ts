@@ -7,6 +7,9 @@ import { Router } from "@angular/router"
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
+import { EnteService } from '../../../@core/data/ente.service';
+import { IdentificacionService } from '../../../@core/data/identificacion.service';
+import { TipoIdentificacionService } from '../../../@core/data/tipo_identificacion.service';
 
 @Component({
   selector: 'pensionado-list',
@@ -16,14 +19,18 @@ import 'style-loader!angular2-toaster/toaster.css';
 export class PensionadoListComponent implements OnInit {
   config: ToasterConfig;
   data = <Array<any>>[];
+  tipo_identificacion = <Array<any>>[];
 
   constructor(private translate: TranslateService,
     private http: HttpClient,
     private userService: PersonaService,
     private router: Router,
-    private toasterService: ToasterService) {
-    
-      this.loadData();
+    private toasterService: ToasterService,
+    private enteService: EnteService,
+    private identificacionService: IdentificacionService,
+    private tipoIdentificacionService: TipoIdentificacionService) {
+
+    this.loadData();
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("Language change...")
@@ -37,7 +44,31 @@ export class PensionadoListComponent implements OnInit {
   loadData(): void {
     this.userService.get('').subscribe(res => {
       this.data = <Array<any>>res;
+
+      this.data.forEach(aux => {
+        this.identificacionService.get('?query=Ente:' + (aux.Ente).toString()).subscribe(id_aux => {
+          aux.IdentificacionData = id_aux;
+        })
+      })
     })
+
+    this.tipoIdentificacionService.get('').subscribe(res => {
+      this.tipo_identificacion = <Array<any>>res;
+    })
+  }
+
+  test() {
+    console.log(this.tipo_identificacion)
+    console.log(this.data)
+  }
+
+  getTipoIdentifacion(id) {
+    if (this.tipo_identificacion)
+      for (let i = 0; i < this.tipo_identificacion.length; i++)
+        if (this.tipo_identificacion[i].Id == id)
+          return this.tipo_identificacion[i];
+
+    return
   }
 
   ngOnInit() {

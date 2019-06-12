@@ -11,10 +11,10 @@ const httpOptions = {
   }),
 }
 
-const path = GENERAL.ENTORNO.PERSONA_SERVICE;
+const path = GENERAL.ENTORNO.TIPO_ORGANIZACION_SERVICE;
 
 @Injectable()
-export class PersonaService {
+export class TipoOrganizacionService {
 
   private user$ = new Subject<[object]>();
   public user: any;

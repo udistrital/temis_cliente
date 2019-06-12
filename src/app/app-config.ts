@@ -7,22 +7,35 @@ export const Config = {
         },
         WSO2_SERVICE: 'http://jbpm.udistritaloas.edu.co:8280/services',
         
-        //PERSONA_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/api/personas_crud/v1/',
-        //EXPERIENCIASERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/experiencia_laboral_crud/',
-        //ORGANIZACION_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/organizacion_crud/',
+        PERSONA_SERVICE: 'http://localhost:8080/v1/persona/',
 
-        PERSONA_SERVICE: 'http://localhost:8080/v1/usuario/',
         EXPERIENCIASERVICE: 'http://localhost:8080/v1/experiencia_laboral/',
-        MONTO_ACEPTADO_POR_COBRAR_SERVICE: 'http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/',
-        INCAPACIDAD_SERVICE: 'http://localhost:8080/v1/incapacidad/',
+        TIPO_DEDICACION_SERVICE: 'http://localhost:8080/v1/tipo_dedicacion/',
+        TIPO_VINCULACION_SERVICE: 'http://localhost:8080/v1/tipo_vinculacion/',
+        CARGO_SERVICE: 'http://localhost:8080/v1/cargo/',
+        DATO_ADICIONAL_EXPERIENCIA_LABORAL_SERVICE: 'http://localhost:8080/v1/dato_adicional_experiencia_laboral/',
+
         INDICE_PRECIO_CONSUMIDOR_SERVICE: 'http://localhost:8080/v1/indice_precio_consumidor/',
         DTF_SERVICE: 'http://localhost:8080/v1/dtf/',
-        ROL_ENTIDAD_SERVICE: 'http://localhost:8080/v1/rol_entidad/',
-        EXPERIENCIA_LABORAL_INCAPACIDAD_SERVICE: 'http://localhost:8080/v1/experiencia_laboral_incapacidad/',
         SALARIO_MINIMO_LEGAL_SERVICE: 'http://localhost:8080/v1/salario_minimo_legal/',
+        
+        MONTO_ACEPTADO_POR_COBRAR_SERVICE: 'http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/',
         REGISTRAR_RECAUDO_SERVICE: 'http://localhost:8080/v1/registrar_recaudo/',
+        
+        EXPERIENCIA_LABORAL_INCAPACIDAD_SERVICE: 'http://localhost:8080/v1/experiencia_laboral_incapacidad/',
+        INCAPACIDAD_SERVICE: 'http://localhost:8080/v1/incapacidad/',
+        
         ORGANIZACION_SERVICE: 'http://localhost:8080/v1/organizacion/',
+        RELACION_ORGANIZACION_SERVICE: 'http://localhost:8080/v1/relacion_organizaciones/',
+        TIPO_ORGANIZACION_SERVICE: 'http://localhost:8080/v1/tipo_organizacion/',
+        TIPO_RELACION_ORGANIZACION_SERVICE: 'http://localhost:8080/v1/tipo_relacion_organizaciones/',
 
+        ENTE_SERVICE: 'http://localhost:8080/v1/ente/',
+        TIPO_ENTE_SERVICE: 'http://localhost:8080/v1/tipo_ente/',
+
+        IDENTIFICACION_SERVICE: 'http://localhost:8080/v1/identificacion/',
+        TIPO_IDENTIFICACION_SERVICE: 'http://localhost:8080/v1/tipo_identificacion/',
+        
         CONFIGURACION_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/api/configuracion_crud_api/v1/',
         NOTIFICACION_SERVICE: 'ws://pruebasapi.intranetoas.udistrital.edu.co:8116/ws/join',
         CONF_MENU_SERVICE: 'http://10.20.0.254/configuracion_api/v1/menu_opcion_padre/ArbolMenus/',

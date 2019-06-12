@@ -11,10 +11,10 @@ const httpOptions = {
     }),
 }
 
-const path = GENERAL.ENTORNO.ENTE_SERVICE;
+const path = GENERAL.ENTORNO.IDENTIFICACION_SERVICE;
 
 @Injectable()
-export class EnteService {
+export class IdentificacionService {
 
     constructor(private http: HttpClient) {
     }

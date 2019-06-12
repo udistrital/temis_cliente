@@ -14,7 +14,7 @@ const httpOptions = {
 const path = GENERAL.ENTORNO.ENTE_SERVICE;
 
 @Injectable()
-export class EnteService {
+export class TipoEnteService {
 
     constructor(private http: HttpClient) {
     }

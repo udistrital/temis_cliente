@@ -10,28 +10,27 @@
           <table class="table table-striped table-hover">
             <thead class="thead-dark">
               <tr>
-                <th>Id</th>
+                <th (click)="test()">Id</th>
                 <th>Documento</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
-                <th>Ciudad de nacimiento</th>
-                <th>Estado civil</th>
-                <th>Genero</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of data">
                 <td> {{ item.Id }} </td>
-                <td> {{ item.TipoDocumento }} {{ item.NumeroDocumento }} </td>
-                <td> {{ item.Nombres }} </td>
-                <td> {{ item.Apellidos }} </td>
-                <td> {{ item.CiudadNacimiento }} </td>
-                <td> {{ item.EstadoCivil }} </td>
-                <td> {{ item.Genero }} </td>
+                <td>
+                  {{ item.IdentificacionData && getTipoIdentifacion(item.IdentificacionData[0].TipoIdentificacion.Id) ? getTipoIdentifacion(item.IdentificacionData[0].TipoIdentificacion.Id).Nombre : '' }}
+                  {{ item.IdentificacionData ? item.IdentificacionData[0].NumeroIdentificacion : '' }} de 
+                  {{ item.IdentificacionData ? item.IdentificacionData[0].LugarExpedicion : '' }} 
+                </td>
+                <td> {{ item.PrimerNombre }} {{ item.SegundoNombre }} </td>
+                <td> {{ item.PrimerApellido }} {{ item.SegundoApellido }} </td>
                 <td style="text-align: center;">
-                  <i class="nb-grid-a-outline" style="font-size: 22px; cursor: pointer;" (click)="goExperienceHistory(item.Id)" data-toggle="tooltip"
-                    data-placement="top" title="Experiencia Laboral"></i>
+                  <i class="nb-grid-a-outline" style="font-size: 22px; cursor: pointer;"
+                    (click)="goExperienceHistory(item.Id)" data-toggle="tooltip" data-placement="top"
+                    title="Experiencia Laboral"></i>
                 </td>
               </tr>
             </tbody>
