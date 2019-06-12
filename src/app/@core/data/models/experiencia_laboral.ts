@@ -1,9 +1,17 @@
+import { Organizacion } from "./organizacion";
+import { CargoModel } from "./cargo";
+import { Persona } from "./persona";
+import { TipoDedicacionModel } from "./tipo_dedicacion";
+import { TipoVinculacion } from "./tipo_vinculacion";
+
 export class ExperienciaLaboralModel {
-    DiasLaboradosSemana: number;
-    EntidadId: number;
-    FechaIngreso: Date;
-    FechaRetiro: Date;
-    HorasLaboradasDia: number;
+    Actividades: string;
+    FechaFinalizacion: Date;
+    FechaInicio: Date;
     Id: number;
-    UsuarioId: number;
+    Organizacion: number;
+    Cargo: CargoModel;
+    Persona: number;
+    TipoVinculacion: TipoVinculacion;
+    TipoDedicacion: TipoDedicacionModel;
 }

@@ -10,9 +10,39 @@
           <form name="form" style="padding-top: 16px">
             <div class="form-group">
               <label for="organizacion">Organización</label>
-              <select style="margin-bottom: 16px;" id="organizacion" placeholder="Organización"
-                class="form-control form-control-sm" [(ngModel)]="experienciaLaboral.EntidadId" name="organizacion">
+              <select style="margin-bottom: 16px;" id="organizacion" placeholder="Seleccione la organización"
+                class="form-control form-control-sm" [(ngModel)]="experienciaLaboral.Organizacion" name="organizacion">
                 <option *ngFor="let item of organizaciones" [value]="item.Id"> {{ item.Nombre }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="cargo">Cargo</label>
+              <select style="margin-bottom: 16px;" id="cargo" placeholder="Seleccione el cargo"
+                class="form-control form-control-sm" [(ngModel)]="Cargo" name="cargo">
+                <option *ngFor="let item of cargos" [value]="item.Id"> {{ item.Nombre }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="actividades">Actividades</label>
+              <textarea class="form-control" rows="10" placeholder="Ingrese las actividades que desarrolla" 
+              [(ngModel)]="experienciaLaboral.Actividades" name="actividades"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="dedicacion">Dedicacion</label>
+              <select style="margin-bottom: 16px;" id="dedicacion" placeholder="Seleccione un tipo de dedidación"
+                class="form-control form-control-sm" [(ngModel)]="Dedicacion" name="dedicacion">
+                <option *ngFor="let item of dedicaciones" [value]="item.Id"> {{ item.Nombre }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="vinculacion">Tipo vinculación</label>
+              <select style="margin-bottom: 16px;" id="vinculacion" placeholder="Seleccione un tipo de vinculación"
+                class="form-control form-control-sm" [(ngModel)]="Vinculacion" name="vinculacion">
+                <option *ngFor="let item of tipo_vinculacion" [value]="item.Id"> {{ item.Nombre }}</option>
               </select>
             </div>
 
@@ -31,13 +61,13 @@
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="horas">Horas diarias laboradas</label>
               <input type="number" id="horas" class="form-control" placeholder="Ingrese el número de horas"
-                aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="experienciaLaboral.HorasLaboradasDia" name="horas">
+                aria-label="horas" aria-describedby="basic-addon-h" [(ngModel)]="horasDiaras.Valor" name="horas">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="dias">Días laborados semanales</label>
               <input type="number" id="dias" class="form-control" placeholder="Ingrese el número de días"
-                aria-label="horas" aria-describedby="basic-addon-d" [(ngModel)]="experienciaLaboral.DiasLaboradosSemana" name="diasxsemana">
+                aria-label="horas" aria-describedby="basic-addon-d" [(ngModel)]="horasSemanales.Valor" name="diasxsemana">
             </div>
 
             <button type="submit" class="btn btn-primary" *ngIf="create" (click)="save()">Guardar</button>

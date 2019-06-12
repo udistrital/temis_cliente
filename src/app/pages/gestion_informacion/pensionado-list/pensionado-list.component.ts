@@ -45,11 +45,12 @@ export class PensionadoListComponent implements OnInit {
     this.userService.get('').subscribe(res => {
       this.data = <Array<any>>res;
 
-      this.data.forEach(aux => {
-        this.identificacionService.get('?query=Ente:' + (aux.Ente).toString()).subscribe(id_aux => {
-          aux.IdentificacionData = id_aux;
+      if (this.data)
+        this.data.forEach(aux => {
+          this.identificacionService.get('?query=Ente:' + (aux.Ente).toString()).subscribe(id_aux => {
+            aux.IdentificacionData = id_aux;
+          })
         })
-      })
     })
 
     this.tipoIdentificacionService.get('').subscribe(res => {

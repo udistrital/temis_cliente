@@ -40,7 +40,7 @@ export class MontoAceptadoListComponent implements OnInit {
     private experienciaService: ExperienciaService,
     private organizacionService: OrganizacionService,
     private montoAceptadoService: MontoAceptadoCobrarService,
-    private usuarioService: PersonaService,
+    private personaService: PersonaService,
     private route: ActivatedRoute,
     private router: Router,
     private roleProvider: NbRoleProvider,
@@ -93,11 +93,11 @@ export class MontoAceptadoListComponent implements OnInit {
         this.experienciaService.get((this.ExperienciaLaboralId).toString()).subscribe(res => {
           this.ExperienciaLaboral = <ExperienciaLaboralModel>res
 
-          this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
+          this.organizacionService.get((this.ExperienciaLaboral.Organizacion).toString()).subscribe(res => {
             this.Organizacion = res
           })
 
-          this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
+          this.personaService.get((this.ExperienciaLaboral.Persona).toString()).subscribe(res => {
             this.Usuario = res
           })
         })
@@ -114,7 +114,7 @@ export class MontoAceptadoListComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list/' + (this.ExperienciaLaboral.UsuarioId).toString()])
+    this.router.navigate(['/pages/experiencia_laboral/experiencia_laboral-list/' + (this.ExperienciaLaboral.Persona).toString()])
   }
 
   onCreate() {

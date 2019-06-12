@@ -8,7 +8,7 @@
     </div>
 
     <nb-tabset fullWidth>
-      <nb-tab tabTitle="Experiencia laboral {{ user ? (': ' + user.Nombres + ' ' + user.Apellidos) : '' }}">
+      <nb-tab tabTitle="Experiencia laboral {{ user ? (': ' + user.PrimerNombre + ' ' + user.SegundoNombre + ' ' + user.PrimerApellido) : '' }}">
         <br />
 
         <table class="table table-striped table-hover">
@@ -18,19 +18,21 @@
               <th>Organización</th>
               <th>Fecha de inicio</th>
               <th>Fecha de retiro</th>
-              <th>Horas laboradas</th>
-              <th>Días laborados</th>
+              <th>Cargo</th>
+              <th>Dedicación</th>
+              <th>Vinculación</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of data">
               <td> {{ item.Id }} </td>
-              <td> {{ getEntity(item.EntidadId).Nombre }} </td>
-              <td> {{ item.FechaIngreso | date }} </td>
-              <td> {{ item.FechaRetiro | date }} </td>
-              <td> {{ item.HorasLaboradasDia }} </td>
-              <td> {{ item.DiasLaboradosSemana }} </td>
+              <td> {{ get_organizacion(item.Organizacion) ? get_organizacion(item.Organizacion).Nombre : ' - ' }} </td>
+              <td> {{ item.FechaInicio | date }} </td>
+              <td> {{ item.FechaFinalizacion ? (item.FechaFinalizacion | date) : ' - ' }} </td>
+              <td> {{ get_cargo(item.Cargo.Id) ? get_cargo(item.Cargo.Id).Nombre : ' - ' }} </td>
+              <td> {{ get_dedicacion(item.TipoDedicacion.Id) ? get_dedicacion(item.TipoDedicacion.Id).Nombre : ' - ' }} </td>
+              <td> {{ get_vinculacion(item.TipoVinculacion.Id) ? get_vinculacion(item.TipoVinculacion.Id).Nombre : ' - ' }} </td>
               <td>
                 <i class="nb-edit" style="font-size: 22px; cursor: pointer;" (click)="onEdit(item.Id)" *ngIf="edit"
                 data-toggle="tooltip" data-placement="top" title="Editar"></i>
@@ -38,8 +40,8 @@
                 <i class="nb-close-circled" style="font-size: 22px; cursor: pointer;" (click)="onDelete(item.Id)" *ngIf="delete"
                 data-toggle="tooltip" data-placement="top" title="Eliminar"></i>
 
-                <i class="nb-person" style="font-size: 22px; cursor: pointer;" (click)="onIncapacidad(item.Id)" 
-                data-toggle="tooltip" data-placement="top" title="Incapacidad"></i>
+                <!--<i class="nb-person" style="font-size: 22px; cursor: pointer;" (click)="onIncapacidad(item.Id)" 
+                data-toggle="tooltip" data-placement="top" title="Incapacidad"></i>-->
 
                 <i class="nb-compose" style="font-size: 22px; cursor: pointer;" (click)="onCobro(item.Id)" 
                 data-toggle="tooltip" data-placement="top" title="Monto a cobrar"></i>

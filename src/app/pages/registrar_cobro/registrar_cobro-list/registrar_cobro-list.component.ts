@@ -98,11 +98,11 @@ export class RegistrarCobroListComponent implements OnInit {
           this.experienciaService.get((this.MontoAceptado.ExperienciaLaboralId).toString()).subscribe(res => {
             this.ExperienciaLaboral = <ExperienciaLaboralModel>res;
 
-            this.organizacionService.get((this.ExperienciaLaboral.EntidadId).toString()).subscribe(res => {
+            this.organizacionService.get((this.ExperienciaLaboral.Organizacion).toString()).subscribe(res => {
               this.Organizacion = res
             })
 
-            this.usuarioService.get((this.ExperienciaLaboral.UsuarioId).toString()).subscribe(res => {
+            this.usuarioService.get((this.ExperienciaLaboral.Persona).toString()).subscribe(res => {
               this.Usuario = res
             })
           })

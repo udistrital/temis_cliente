@@ -10,6 +10,13 @@ import { NbRoleProvider, NbAccessChecker } from '@nebular/security';
 
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
+import { CargoService } from '../../../@core/data/cargo.service';
+import { TipoDedicacionService } from '../../../@core/data/tipo_dedicacion.service';
+import { TipoVinculacionService } from '../../../@core/data/tipo_vinculacion.service';
+import { Organizacion } from '../../../@core/data/models/organizacion';
+import { CargoModel } from '../../../@core/data/models/cargo';
+import { TipoDedicacionModel } from '../../../@core/data/models/tipo_dedicacion';
+import { TipoVinculacion } from '../../../@core/data/models/tipo_vinculacion';
 
 @Component({
   selector: 'ngx-list-experiencia-laboral',
@@ -19,9 +26,14 @@ import 'style-loader!angular2-toaster/toaster.css';
 export class ListExperienciaLaboralComponent implements OnInit {
   config: ToasterConfig;
   data: Array<any>;
+
   id: string;
   user: any;
-  entities: Array<any>;
+
+  organizaciones: Array<any>;
+  cargos: Array<any>;
+  tipo_dedicacion: Array<any>;
+  tipo_vinculacion: Array<any>;
 
   create: boolean;
   view: boolean;
@@ -32,12 +44,15 @@ export class ListExperienciaLaboralComponent implements OnInit {
     private toasterService: ToasterService,
     private http: HttpClient,
     private experienciaService: ExperienciaService,
-    private userService: PersonaService,
+    private personaService: PersonaService,
     private organizacionService: OrganizacionService,
     private route: ActivatedRoute,
     private router: Router,
     private roleProvider: NbRoleProvider,
-    private accessChecker: NbAccessChecker) {
+    private accessChecker: NbAccessChecker,
+    private cargoService: CargoService,
+    private tipoDedicacionService: TipoDedicacionService,
+    private tipoVinculacionService: TipoVinculacionService) {
 
     this.get_access_rights()
 
@@ -81,15 +96,11 @@ export class ListExperienciaLaboralComponent implements OnInit {
       this.id = params.get("usuarioId");
 
       if (this.id != null) {
-        this.userService.get((this.id).toString()).subscribe(res => {
+        this.personaService.get((this.id).toString()).subscribe(res => {
           this.user = res;
         })
 
-        this.organizacionService.get('').subscribe(res => {
-          this.entities = <Array<any>>res;
-        })
-
-        this.experienciaService.get('?query=UsuarioId:' + (this.id).toString()).subscribe(res => {
+        this.experienciaService.get('?query=Persona:' + (this.id).toString()).subscribe(res => {
           this.data = <Array<any>>res;
         })
       }
@@ -98,14 +109,21 @@ export class ListExperienciaLaboralComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
+    this.organizacionService.get('').subscribe(res => {
+      this.organizaciones = <Array<any>>res;
+    })
 
-  getEntity(id) {
-    for (let i = 0; i < this.entities.length; i++)
-      if (this.entities[i].Id == id)
-        return this.entities[i]
+    this.cargoService.get('').subscribe(res => {
+      this.cargos = <Array<any>>res;
+    })
 
-    return {}
+    this.tipoDedicacionService.get('').subscribe(res => {
+      this.tipo_dedicacion = <Array<any>>res;
+    })
+
+    this.tipoVinculacionService.get('').subscribe(res => {
+      this.tipo_vinculacion = <Array<any>>res;
+    })
   }
 
   goBack() {
@@ -125,6 +143,8 @@ export class ListExperienciaLaboralComponent implements OnInit {
   }
 
   onDelete(id): void {
+    console.log(id)
+    
     const opt: any = {
       title: this.translate.instant('GLOBAL.eliminar'),
       text: this.translate.instant('GLOBAL.eliminar') + '?',
@@ -138,7 +158,7 @@ export class ListExperienciaLaboralComponent implements OnInit {
     Swal(opt)
       .then((willDelete) => {
         if (willDelete.value) {
-          this.userService.delete('', id).subscribe(res => {
+          this.experienciaService.delete('', id).subscribe(res => {
             if (res !== null) {
               this.loadData();
               this.showToast('info', this.translate.instant('GLOBAL.eliminar'),
@@ -154,6 +174,42 @@ export class ListExperienciaLaboralComponent implements OnInit {
           })
         }
       });
+  }
+
+  get_organizacion(id) {
+    if (this.organizaciones)
+      for (let i = 0; i < this.organizaciones.length; i++)
+        if (this.organizaciones[i].Id == id)
+          return this.organizaciones[i];
+
+    return new Organizacion;
+  }
+
+  get_cargo(id) {
+    if (this.cargos)
+      for (let i = 0; i < this.cargos.length; i++)
+        if (this.cargos[i].Id == id)
+          return this.cargos[i];
+
+    return new CargoModel;
+  }
+
+  get_dedicacion(id) {
+    if (this.tipo_dedicacion)
+      for (let i = 0; i < this.tipo_dedicacion.length; i++)
+        if (this.tipo_dedicacion[i].Id == id)
+          return this.tipo_dedicacion[i];
+
+    return new TipoDedicacionModel;
+  }
+
+  get_vinculacion(id) {
+    if (this.tipo_vinculacion)
+      for (let i = 0; i < this.tipo_vinculacion.length; i++)
+        if (this.tipo_vinculacion[i].Id == id)
+          return this.tipo_vinculacion[i];
+
+    return new TipoVinculacion;
   }
 
   private showToast(type: string, title: string, body: string) {
