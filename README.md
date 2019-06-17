@@ -1,8 +1,6 @@
 
 # :ledger: Admin - TEMIS
-Este repositorio contiene los módulos de gestión de datos y gestión de información pertenecientes al sistema de cuotas partes. 
-
-En este repositorio se define la tecnología que se renderizara del lado del cliente.
+Este repositorio contiene el Api cliente desarrollado en Typescript donde se realiza la migración a las nuevas tecnologías de los módulos de gestión de datos y gestión de información pertenecientes al sistema de cuotas partes de pensionados de la Universidad Distrital Francisco José de Caldas, basado en los lineamientos del proceso de desarrollo de la Oficina Asesora de Sistemas (OAS).
 
 Como componentes básicos cuenta con:
 
@@ -14,12 +12,38 @@ Como componentes básicos cuenta con:
 <summary><h2> 🛠️ Configuracion del proyecto</h2></summary>
 <details>
 
-  - Clonar el proyecto del repositorio de git, configurar el repositorio remoto (github), e instalarlo localmente con 
+  - Clonar el proyecto del repositorio de git
+  
+  ```shell 
+      git clone https://github.com/udistrital/temis_cliente.git
+  ```
+  
+  Entramos a la carpeta del proyecto instalado
+
+  ```shell 
+      cd ~/temis_cliente/
+  ```
+
+  Revisamos la configuración del npm instalado y empleado dentro de la carpeta del proyecto
+
+  ```shell 
+      nvm version
+  ```
+
+  Debe de emplearse una version de nvm > 8.0 para poder ejecutar el proyecto, por lo tanto en caso de no tener instalada una versión reciente, se deberá de realizar primer o inspeccionar en el listado las versiones disponibles para seleccionar la más reciente (> 8.0)
+
+  ```shell 
+      nvm ls
+      nvm use 10.14
+  ```
+   
+  Instalamos las librerias establecidas desde el package.json con el siguiente comando:
   
   ```shell 
       npm install
   ```
-  - Correr el proyecto para verificar que las dependencias estan correctamente instaladas
+
+  Correr el proyecto para verificar que las dependencias estan correctamente instaladas
 
   ```shell 
       ng serve
