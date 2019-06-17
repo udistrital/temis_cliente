@@ -1,90 +1,106 @@
 
-Project Documentation
+# :ledger: Admin - TEMIS
+Este repositorio contiene los módulos de gestión de datos y gestión de información pertenecientes al sistema de cuotas partes. 
 
-[Project Documentation using compodoc](https://udistrital.github.io/campus_cliente/documentation)
+En este repositorio se define la tecnología que se renderizara del lado del cliente.
 
+Como componentes básicos cuenta con:
 
+ * **ngxAdmin** ~ [link_documentación](https://github.com/akveo/ngx-admin)
+ * **Angular 6.0**
+ * **Bootstrap 4**
+ * **Nebular Components**
 
-Bak from mockups
+<summary><h2> 🛠️ Configuracion del proyecto</h2></summary>
+<details>
 
-[![Build Status](https://travis-ci.org/akveo/ngx-admin.svg?branch=master)](https://travis-ci.org/akveo/ngx-admin)
-[![Join the chat at https://gitter.im/ng2-admin/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ng2-admin/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Dependency Status](https://david-dm.org/akveo/ngx-admin/status.svg)](https://david-dm.org/akveo/ng2-admin)
-
-[Who uses ngx-admin?](https://github.com/akveo/ngx-admin/issues/1645)
-
-# Admin template based on Angular 6+, Bootstrap 4 and <a href="https://github.com/akveo/nebular">Nebular</a>
-
-### Three themes available:
-
-| Corporate Theme |
-|:---------------:|
-|<a target="_blank" href="http://akveo.com/ngx-admin/#/pages/dashboard?theme=corporate&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/axbJYdN.png"/></a>|
-
-| Cosmic Theme | Light Theme |
-|:------------:|:--------------:|
-|<a target="_blank" href="http://akveo.com/ngx-admin/#/pages/dashboard?theme=cosmic&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/FgRZcqL.png"/></a>|<a target="_blank" href="http://akveo.com/ngx-admin/#/pages/dashboard?theme=default&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/fozHlRJ.png"/></a>|
-
-### What's included:
-
-- Angular 6+ & Typescript
-- Bootstrap 4+ & SCSS
-- Responsive layout
-- RTL support
-- High resolution
-- Flexibly configurable themes with **hot-reload** (2 themes included)
-- Authentication module with multiple providers
-- Lots of awesome features:
-  - Buttons
-  - Modals
-  - Popovers
-  - Icons
-  - Typography
-  - Animated searches
-  - Forms
-  - Tabs
-  - Notifications
-  - Tables
-  - Maps
-  - Charts
-  - Editors
+  - Clonar el proyecto del repositorio de git, configurar el repositorio remoto (github), e instalarlo localmente con 
   
-And many more!
+  ```shell 
+      npm install
+  ```
+  - Correr el proyecto para verificar que las dependencias estan correctamente instaladas
 
-### Hot Themes Reload
+  ```shell 
+      ng serve
+  ```
 
-<a target="_blank" href="http://akveo.com/ngx-admin/#/pages/dashboard?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=demo"><img src="https://i.imgur.com/XoJtfvK.gif"/></a>
+</details>
 
-### Demo
+<summary><h2> :pick: Dependencias Utilizadas</h2></summary>
+<details>
 
-<a target="_blank" href="http://akveo.com/ngx-admin/">Live Demo</a>
+    Dependencias incluidas:
 
-## Documentation
-This template is using [Nebular](https://github.com/akveo/nebular) modules set, [here you can find documentation and other useful articles](https://akveo.github.io/nebular/docs/installation/based-on-starter-kit-ngxadmin).
+  - **Nebular:** (https://github.com/akveo/nebular)
+  - **Angular 6**
+  - **Bootstrap 4** 
 
-### ng2-admin
-We will continue supporting [ng2-admin](https://github.com/akveo/ngx-admin/tree/ng2-admin) version, but if you are starting from scratch we recommend using `ngx-admin`. Unfortunately, there is no way to automatically update from ng2-admin to ngx-admin, but some parts (Nebular components) could be manually included.
+    Dependencias:
 
-### Empty starter kit
-Don't need all the pages and modules and just looking for an empty starter kit for your next project? Check out our [starter-kit branch](https://github.com/akveo/ngx-admin/tree/starter-kit).
+  - **npm > 6.0** 
+  - **nvm > 8.0** 
 
-### AngularJS 1.x version
-Here you can find AngularJS 1.x based version: [Blur Admin](http://akveo.github.io/blur-admin/)
+  ### API CRUD
+  - **temis_monto_aceptado_crud:** este [api](https://github.com/udistrital/temis_monto_aceptado_crud) se encarga de gestionar las tablas donde se registra el monto aceptado según la cuota parte otorgada a la organización y el registro de los pagos que se realizan sobre el monto aceptado.
 
-## BrowserStack
-This project runs its tests on multiple desktop and mobile browsers using [BrowserStack](http://www.browserstack.com).
+  ### Herramientas usadas
+  
+  - **ngxGenerator:** este [generador](https://github.com/BOTOOM/ngxGenerator) se encarga de crear una un proyecto con las caracteristicas descritas en el repositorio.
 
-<img src="https://cloud.githubusercontent.com/assets/131406/22254249/534d889e-e254-11e6-8427-a759fb23b7bd.png" height="40" />
+  - **ngx-admin:** este [template](https://github.com/akveo/ngx-admin) es el que utiliza ngxGenerator, esta basado en Angular 6+, Bootstrap 4 y <a href="https://github.com/akveo/nebular">Nebular</a>.
 
-### How can I support developers?
-- Star our GitHub repo :star:
-- Create pull requests, submit bugs, suggest new features or documentation updates :wrench:
-- Follow us on [Twitter](https://twitter.com/akveo_inc) :feet:
-- Like our page on [Facebook](https://www.facebook.com/akveo/) :thumbsup:
+  ### Variables de entorno
+  ```typescript 
+      export const Config = {
+      LOCAL: {
+        NUXEO: {
+            PATH: 'https://documental.udistrital.edu.co/nuxeo/',
+        },
+        WSO2_SERVICE: 'http://jbpm.udistritaloas.edu.co:8280/services',
+        
+        PERSONA_SERVICE: 'http://localhost:8080/v1/persona/',
 
-### Looking for engineering services? 
-Visit [our homepage](http://akveo.com/) or simply leave us a message to [contact@akveo.com](mailto:contact@akveo.com). We will be happy to work with you!
+        EXPERIENCIASERVICE: 'http://localhost:8080/v1/experiencia_laboral/',
+        TIPO_DEDICACION_SERVICE: 'http://localhost:8080/v1/tipo_dedicacion/',
+        TIPO_VINCULACION_SERVICE: 'http://localhost:8080/v1/tipo_vinculacion/',
+        CARGO_SERVICE: 'http://localhost:8080/v1/cargo/',
+        DATO_ADICIONAL_EXPERIENCIA_LABORAL_SERVICE: 'http://localhost:8080/v1/dato_adicional_experiencia_laboral/',
 
-### From Akveo
-Made with :heart: by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get the latest news first!
-We're always happy to receive your feedback!
+        INDICE_PRECIO_CONSUMIDOR_SERVICE: 'http://localhost:8080/v1/indice_precio_consumidor/',
+        DTF_SERVICE: 'http://localhost:8080/v1/dtf/',
+        SALARIO_MINIMO_LEGAL_SERVICE: 'http://localhost:8080/v1/salario_minimo_legal/',
+        
+        MONTO_ACEPTADO_POR_COBRAR_SERVICE: 'http://localhost:8080/v1/registrar_monto_aceptado_por_cobrar/',
+        REGISTRAR_RECAUDO_SERVICE: 'http://localhost:8080/v1/registrar_recaudo/',
+        
+        EXPERIENCIA_LABORAL_INCAPACIDAD_SERVICE: 'http://localhost:8080/v1/experiencia_laboral_incapacidad/',
+        INCAPACIDAD_SERVICE: 'http://localhost:8080/v1/incapacidad/',
+        
+        ORGANIZACION_SERVICE: 'http://localhost:8080/v1/organizacion/',
+        RELACION_ORGANIZACION_SERVICE: 'http://localhost:8080/v1/relacion_organizaciones/',
+        TIPO_ORGANIZACION_SERVICE: 'http://localhost:8080/v1/tipo_organizacion/',
+        TIPO_RELACION_ORGANIZACION_SERVICE: 'http://localhost:8080/v1/tipo_relacion_organizaciones/',
+
+        ENTE_SERVICE: 'http://localhost:8080/v1/ente/',
+        TIPO_ENTE_SERVICE: 'http://localhost:8080/v1/tipo_ente/',
+
+        IDENTIFICACION_SERVICE: 'http://localhost:8080/v1/identificacion/',
+        TIPO_IDENTIFICACION_SERVICE: 'http://localhost:8080/v1/tipo_identificacion/',
+        
+        CONFIGURACION_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/api/configuracion_crud_api/v1/',
+        NOTIFICACION_SERVICE: 'ws://pruebasapi.intranetoas.udistrital.edu.co:8116/ws/join',
+        CONF_MENU_SERVICE: 'http://10.20.0.254/configuracion_api/v1/menu_opcion_padre/ArbolMenus/',
+        TOKEN: {
+            AUTORIZATION_URL: 'https://autenticacion.portaloas.udistrital.edu.co/oauth2/authorize',
+          CLIENTE_ID: '3Idp5LUlnZY7cOV10NaLuyRfzooa',
+          RESPONSE_TYPE: 'id_token token',
+          SCOPE: 'openid email role documento',
+          REDIRECT_URL: 'http://localhost:4200/',
+          SIGN_OUT_URL: 'https://autenticacion.portaloas.udistrital.edu.co/oidc/logout',
+          SIGN_OUT_REDIRECT_URL: 'http://localhost:4200/',
+        },
+    },
+  };
+  ```
+</details>
