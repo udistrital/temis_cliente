@@ -5,4 +5,5 @@ export class SalarioMinimoLegalModel {
   FechaInicioVigencia: Date;
   FechaFinalizacionVigencia: Date;
   MontoMensual: number;
+  TasaInteres: number;
 }
