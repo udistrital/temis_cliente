@@ -83,11 +83,7 @@ export const NB_CORE_PROVIDERS = [
   }).providers,
   {
     provide: NbTokenStorage,
-    useValue: {
-      get: () => {
-        return window.localStorage.getItem('id_token');
-      }
-    }
+    useClass: NbTokenLocalStorage
   },
 
   NbSecurityModule.forRoot({
