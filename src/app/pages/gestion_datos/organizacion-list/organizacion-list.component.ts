@@ -41,15 +41,16 @@ export class OrganizacionListComponent implements OnInit {
     this.organizacionService.get('').subscribe(res => {
       this.data = <Array<any>>res
 
-      this.data.forEach(org => {
-        this.enteService.get(org.Ente).subscribe(en_res => {
-          org.EnteData = en_res
-        })
+      if (this.data && this.data.length)
+        this.data.forEach(org => {
+          this.enteService.get(org.Ente).subscribe(en_res => {
+            org.EnteData = en_res
+          })
 
-        this.identificacionService.get('?query=Ente:' + (org.Ente).toString()).subscribe(id_res => {
-          org.IdentificacionData = id_res
+          this.identificacionService.get('?query=Ente:' + (org.Ente).toString()).subscribe(id_res => {
+            org.IdentificacionData = id_res
+          })
         })
-      })
     })
 
     this.tipoOrganizacionService.get('').subscribe(res => {
